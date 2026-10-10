@@ -1,0 +1,1197 @@
+E<!--
+█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+█                                                                    █
+█   ⚠️⚠️⚠️  ROTULO DE CONFIGURACION DE LA CONEXION  ⚠️⚠️⚠️             █
+█                                                                    █
+█   ESTE SISTEMA SE CONECTA CON TU HOJA DE CALCULO DE GOOGLE         █
+█   A TRAVES DE UNA URL QUE DEBES PEGAR DENTRO DE ESTE ARCHIVO.      █
+█                                                                    █
+█   👉  PRESIONA  Ctrl+F  Y BUSCA LA PALABRA:   PEGA_AQUI            █
+█       Eso te llevara a la linea exacta donde debes pegar la URL   █
+█       de tu implementacion de Google Apps Script (termina en /exec)█
+█                                                                    █
+█   NOTA v3.1: la URL ya NO se guarda en el navegador. Siempre       █
+█   manda la que escribas aqui. (Esto corrigio el error repetido.)   █
+█                                                                    █
+█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Registro Académico — Ministerio de Educación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#0e3fa9; --azul-osc:#0a2a6e; --azul-tinta:#071d4d; --dorado:#d9a418; --dorado-osc:#b3830e;
+  --verde:#1d7a4f; --rojo:#b3261e; --ambar:#c07f00;
+  --tinta:#16233f; --papel:#f2f5fb; --linea:#d8dfef; --blanco:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px}
+body{font-family:'Source Sans 3',sans-serif;color:var(--tinta);background:var(--papel);
+  background-image:repeating-linear-gradient(135deg,rgba(14,63,169,.035) 0 2px,transparent 2px 26px),
+  radial-gradient(1000px 420px at 85% -10%,rgba(217,164,24,.14),transparent 60%);}
+h1,h2,h3,h4,.display{font-family:'Archivo',sans-serif}
+button{font-family:'Archivo',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'Source Sans 3',sans-serif;font-size:.95rem;color:var(--tinta);
+  border:1px solid var(--linea);border-radius:6px;padding:.55rem .7rem;background:#fff;width:100%;outline:none;transition:border .15s, box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(14,63,169,.15)}
+label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#4a5b7d;display:block;margin-bottom:.3rem}
+.campo{margin-bottom:.85rem}
+
+#splash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,var(--azul-tinta) 0%,var(--azul-osc) 55%,var(--azul) 100%);color:#fff;transition:opacity .5s}
+#splash::before{content:'';position:absolute;inset:0;opacity:.08;
+  background:repeating-linear-gradient(115deg,#fff 0 2px,transparent 2px 34px);animation:deriva 22s linear infinite}
+@keyframes deriva{to{transform:translateX(120px)}}
+.splash-caja{position:relative;text-align:center;width:min(500px,92%)}
+.splash-caja svg{width:92px;height:92px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.35));animation:latido 2.4s ease-in-out infinite}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#splash h1{font-size:1.5rem;font-weight:900;letter-spacing:.02em;margin:.9rem 0 .1rem}
+#splash small{opacity:.75;letter-spacing:.22em;text-transform:uppercase;font-size:.68rem}
+.barra-ext{margin-top:1.6rem;height:10px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+#splashBar{height:100%;width:0%;border-radius:99px;transition:width .5s ease;
+  background:repeating-linear-gradient(45deg,var(--dorado) 0 12px,#f0c14b 12px 24px);background-size:34px 100%;animation:rayas 1s linear infinite}
+@keyframes rayas{to{background-position:34px 0}}
+#splashMsg{margin-top:.8rem;font-size:.9rem;color:#ffe9ad;font-weight:600;min-height:1.3em}
+#splashMsg small{display:block;margin-top:.4rem;font-size:.74rem;font-weight:400;opacity:.85;word-break:break-all}
+
+#loginScreen{display:none;min-height:100vh}
+.franja-gob{background:var(--azul-tinta);color:#cfdcf7;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.4rem 1rem;text-align:center;border-bottom:3px solid var(--dorado)}
+.login-envoltura{display:flex;min-height:calc(100vh - 34px)}
+.login-lateral{flex:1.1;display:flex;flex-direction:column;justify-content:center;padding:3.4rem 3.6rem;color:#fff;
+  background:linear-gradient(155deg,var(--azul-tinta),var(--azul-osc) 60%,var(--azul));position:relative;overflow:hidden}
+.login-lateral::after{content:'';position:absolute;right:-90px;bottom:-90px;width:340px;height:340px;border-radius:50%;
+  border:52px solid rgba(217,164,24,.18)}
+.login-lateral .display{font-size:2.6rem;font-weight:900;line-height:1.08;max-width:15ch}
+.login-lateral .display span{color:var(--dorado)}
+.login-lateral p{margin-top:1rem;max-width:44ch;opacity:.85;line-height:1.6}
+.login-derecha{flex:1;display:flex;align-items:center;justify-content:center;padding:2.4rem}
+.tarjeta-login{width:min(430px,100%);background:#fff;border:1px solid var(--linea);border-top:5px solid var(--azul);
+  border-radius:10px;box-shadow:0 24px 60px -22px rgba(10,42,110,.35);padding:2rem 2rem 1.6rem;animation:aparecer .5s ease}
+@keyframes aparecer{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tarjeta-login h2{font-size:1.35rem;font-weight:800}
+.tarjeta-login .sub{font-size:.85rem;color:#63718f;margin:.2rem 0 1.3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border:none;border-radius:7px;
+  font-weight:700;font-size:.9rem;padding:.65rem 1.15rem;transition:transform .12s, box-shadow .15s, background .15s}
+.btn:active{transform:translateY(1px)}
+.btn-azul{background:var(--azul);color:#fff}.btn-azul:hover{background:var(--azul-osc);box-shadow:0 8px 20px -8px rgba(14,63,169,.6)}
+.btn-oro{background:var(--dorado);color:#231a00}.btn-oro:hover{background:#e7b52c}
+.btn-linea{background:#fff;border:1.5px solid var(--azul);color:var(--azul)}.btn-linea:hover{background:#eef3fd}
+.btn-rojo{background:var(--rojo);color:#fff}.btn-fantasma{background:transparent;color:#63718f;border:1.5px solid var(--linea)}
+.btn-full{width:100%}
+#loginError{display:none;background:#fdecec;color:var(--rojo);border:1px solid #f2bcbc;border-radius:6px;
+  padding:.55rem .8rem;font-size:.85rem;font-weight:600;margin-bottom:.9rem}
+.mini-nota{margin-top:1.1rem;font-size:.74rem;color:#8a97b5;text-align:center;letter-spacing:.03em}
+
+#app{display:none;min-height:100vh;grid-template-columns:236px 1fr;grid-template-rows:auto 1fr;
+  grid-template-areas:'gob gob' 'lado topo' 'lado cont'}
+.franja-gob.app{grid-area:gob}
+.sidebar{grid-area:lado;background:linear-gradient(180deg,var(--azul-tinta),var(--azul-osc));color:#dfe8fb;
+  display:flex;flex-direction:column;padding:1.1rem .8rem;position:sticky;top:0;height:100vh}
+.marca{display:flex;align-items:center;gap:.6rem;padding:.3rem .5rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:.9rem}
+.marca svg{width:38px;height:38px;flex:none}
+.marca b{font-family:'Archivo';font-size:.86rem;line-height:1.15;display:block}
+.marca small{font-size:.62rem;letter-spacing:.16em;color:var(--dorado);text-transform:uppercase}
+.navitem{display:flex;align-items:center;gap:.65rem;width:100%;text-align:left;background:transparent;border:none;
+  color:#c9d6f2;font-size:.92rem;font-weight:600;padding:.62rem .8rem;border-radius:7px;margin-bottom:.15rem;
+  position:relative;transition:background .15s,color .15s,padding-left .15s}
+.navitem:hover{background:rgba(255,255,255,.08);color:#fff;padding-left:1rem}
+.navitem.activo{background:rgba(217,164,24,.16);color:#ffd76a}
+.navitem.activo::before{content:'';position:absolute;left:0;top:18%;bottom:18%;width:4px;border-radius:4px;background:var(--dorado)}
+.lado-pie{margin-top:auto;padding:.8rem .6rem 0;border-top:1px solid rgba(255,255,255,.14);font-size:.74rem;color:#9db2dd}
+.topbar{grid-area:topo;background:#fff;border-bottom:1px solid var(--linea);display:flex;align-items:center;gap:1rem;
+  padding:.7rem 1.4rem;position:sticky;top:0;z-index:20}
+#topTitle{font-size:1.2rem;font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;border-radius:99px;
+  padding:.3rem .75rem;border:1px solid var(--linea);background:#f7f9fe;color:#43536f}
+.punto{width:9px;height:9px;border-radius:50%;background:var(--verde);animation:pulso 1.8s infinite}
+.punto.rojo{background:var(--rojo)} .punto.ambar{background:var(--ambar)}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(29,122,79,.5)}70%{box-shadow:0 0 0 7px rgba(29,122,79,0)}100%{box-shadow:0 0 0 0 rgba(29,122,79,0)}}
+#saveState{font-size:.78rem;color:#4a5b7d;font-weight:600;min-width:150px;text-align:right}
+.userchip{display:flex;align-items:center;gap:.55rem}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--azul);color:#fff;display:flex;align-items:center;
+  justify-content:center;font-family:'Archivo';font-weight:800;font-size:.8rem}
+.contenido{grid-area:cont;padding:1.5rem 1.6rem 3rem;max-width:1280px;width:100%}
+.vista{display:none;animation:aparecer .35s ease}
+.vista.activa{display:block}
+
+.tarjeta{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem 1.3rem;
+  box-shadow:0 10px 26px -20px rgba(10,42,110,.35);margin-bottom:1.2rem}
+.tarjeta h3{font-size:1.02rem;font-weight:800;display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}
+.tarjeta h3 .num{background:var(--azul);color:#fff;font-size:.68rem;border-radius:5px;padding:.18rem .45rem;letter-spacing:.08em}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 1.1rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 1.1rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:0 1.1rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.2rem}
+.stat{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1rem 1.1rem;position:relative;overflow:hidden;
+  transition:transform .18s, box-shadow .18s}
+.stat:hover{transform:translateY(-3px);box-shadow:0 16px 30px -18px rgba(10,42,110,.4)}
+.stat::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--azul)}
+.stat.oro::before{background:var(--dorado)} .stat.verde::before{background:var(--verde)} .stat.rojo::before{background:var(--rojo)}
+.stat small{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#63718f;font-weight:700}
+.stat .cifra{font-family:'Archivo';font-size:2.1rem;font-weight:900;color:var(--azul-tinta)}
+.tabla{width:100%;border-collapse:collapse;font-size:.88rem}
+.tabla th{background:#eef2fb;color:#33415e;text-transform:uppercase;font-size:.68rem;letter-spacing:.07em;
+  padding:.55rem .6rem;text-align:left;border-bottom:2px solid var(--linea)}
+.tabla td{padding:.5rem .6rem;border-bottom:1px solid #e8edf7;vertical-align:middle}
+.tabla tbody tr{transition:background .12s}
+.tabla tbody tr:hover{background:#f4f8ff}
+.miniatura{width:34px;height:42px;object-fit:cover;border-radius:5px;border:1px solid var(--linea);background:#e8edf7}
+.chip{display:inline-block;font-size:.68rem;font-weight:800;border-radius:99px;padding:.18rem .6rem;letter-spacing:.04em}
+.chip-azul{background:#e3ebfd;color:var(--azul)} .chip-verde{background:#e2f3ea;color:var(--verde)}
+.chip-rojo{background:#fdeae9;color:var(--rojo)} .chip-oro{background:#fdf3d7;color:#8a6500}
+.acciones button{border:none;background:#eef2fb;border-radius:6px;width:32px;height:32px;font-size:.9rem;
+  margin-right:.25rem;transition:background .12s,transform .12s}
+.acciones button:hover{background:var(--azul);color:#fff;transform:translateY(-2px)}
+.acciones button.borrar:hover{background:var(--rojo)}
+.filtros{display:flex;flex-wrap:wrap;gap:.7rem;align-items:flex-end;margin-bottom:1rem}
+.filtros .campo{margin:0;min-width:180px;flex:1}
+
+.cam-panel{border:2px solid var(--azul-tinta);border-radius:10px;overflow:hidden;position:relative;background:#000;aspect-ratio:3/4}
+.cam-panel video,.cam-panel canvas{width:100%;height:100%;object-fit:cover;display:block}
+.scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--dorado),transparent);
+  animation:escaneo 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes escaneo{0%,100%{top:8%}50%{top:92%}}
+#fotoPreview{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;border-radius:10px;border:1px solid var(--linea);background:#e8edf7}
+.docs-check label{display:flex;align-items:flex-start;gap:.5rem;font-size:.82rem;text-transform:none;letter-spacing:0;
+  font-weight:600;color:#33415e;padding:.28rem 0;cursor:pointer}
+.docs-check input{width:auto;margin-top:.15rem}
+
+.estado-grupo{display:flex;gap:.25rem}
+.estado-grupo button{width:32px;height:30px;border-radius:6px;border:1.5px solid var(--linea);background:#fff;
+  font-family:'Archivo';font-weight:800;font-size:.78rem;color:#63718f;transition:all .12s}
+.estado-grupo button.sel-A{background:var(--verde);border-color:var(--verde);color:#fff}
+.estado-grupo button.sel-F{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.estado-grupo button.sel-R{background:var(--ambar);border-color:var(--ambar);color:#fff}
+.estado-grupo button.sel-P{background:var(--azul);border-color:var(--azul);color:#fff}
+
+.modal-fondo{position:fixed;inset:0;background:rgba(7,29,77,.55);backdrop-filter:blur(3px);z-index:60;
+  display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal-fondo.abierto{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:900px;width:100%;max-height:92vh;display:flex;flex-direction:column;
+  animation:aparecer .25s ease;overflow:hidden}
+.modal-cab{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;border-bottom:1px solid var(--linea)}
+.modal-cab h3{font-size:1.05rem;font-weight:800}
+.modal-cuerpo{overflow:auto;padding:1.3rem;background:#dfe6f2}
+.modal-pie{display:flex;gap:.6rem;justify-content:flex-end;padding:.85rem 1.2rem;border-top:1px solid var(--linea);background:#fff}
+#docPaper{background:#fff;margin:0 auto;box-shadow:0 18px 40px -18px rgba(0,0,0,.4);padding:0}
+#toasts{position:fixed;right:1.2rem;bottom:1.2rem;z-index:90;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--azul-tinta);color:#fff;padding:.7rem 1rem;border-radius:8px;font-size:.86rem;font-weight:600;
+  border-left:5px solid var(--dorado);box-shadow:0 12px 26px -12px rgba(0,0,0,.5);animation:aparecer .25s ease;max-width:340px}
+.toast.error{border-left-color:var(--rojo);background:#5c120e}
+.toast.ok{border-left-color:var(--verde)}
+
+.doc{width:760px;font-family:'Source Sans 3',Arial;color:#141c2e;position:relative;padding:34px 40px;background:#fff}
+.doc .marca-agua{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.06;pointer-events:none}
+.doc .marca-agua img{max-height:420px}
+.membrete{display:flex;align-items:center;gap:14px;border-bottom:3px double var(--azul);padding-bottom:12px;margin-bottom:16px}
+.membrete img{height:74px;object-fit:contain}
+.membrete .centro{flex:1;text-align:center}
+.membrete .ministerio{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#4a5b7d;font-weight:700}
+.membrete .institucion{font-family:'Archivo';font-weight:900;font-size:17px;color:var(--azul-tinta);text-transform:uppercase;line-height:1.2}
+.membrete .detalle{font-size:11px;color:#4a5b7d}
+.doc-titulo{margin:6px auto 18px;text-align:center;background:var(--azul);color:#fff;font-family:'Archivo';
+  font-weight:800;letter-spacing:.12em;font-size:13px;padding:7px 26px;width:max-content;border-radius:3px;text-transform:uppercase}
+.doc-meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:12px;color:#33415e;font-weight:700}
+.doc table.datos{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:12px}
+.doc table.datos td,.doc table.datos th{border:1px solid #9aa7c4;padding:5px 8px;vertical-align:top}
+.doc table.datos th{background:#eef2fb;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;width:190px;color:#33415e}
+.doc table.notas{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px}
+.doc table.notas th,.doc table.notas td{border:1px solid #9aa7c4;padding:5px 7px;text-align:center}
+.doc table.notas th{background:var(--azul);color:#fff;font-size:10.5px;letter-spacing:.05em}
+.doc table.notas td.mat{text-align:left;font-weight:600}
+.doc .parrafo{font-family:Georgia,serif;font-size:14px;line-height:2;text-align:justify;margin-bottom:14px}
+.doc .firma-zona{display:flex;justify-content:space-around;margin-top:64px}
+.doc .firma{width:230px;border-top:1.5px solid #141c2e;text-align:center;padding-top:5px;font-size:12px;font-weight:700}
+.doc .firma small{display:block;font-weight:400;color:#4a5b7d}
+.doc .pie-doc{margin-top:22px;border-top:1px solid #c6cfe2;padding-top:7px;font-size:9.5px;color:#63718f;
+  display:flex;justify-content:space-between;letter-spacing:.03em}
+.foto-doc{width:108px;height:138px;object-fit:cover;border:2px solid var(--azul);border-radius:4px;background:#e8edf7}
+#printDoc{display:none}
+@media print{
+  body>*:not(#printDoc){display:none !important}
+  #printDoc{display:block !important}
+  @page{size:letter;margin:10mm}
+  .doc{width:auto;padding:0}
+}
+@media(max-width:980px){
+  #app{grid-template-columns:70px 1fr}
+  .marca b,.marca small,.navitem span,.lado-pie{display:none}
+  .grid3,.grid4{grid-template-columns:repeat(2,1fr)}
+  .login-lateral{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= SPLASH DE SINCRONIZACIÓN ================= -->
+<div id="splash">
+  <div class="splash-caja">
+    <svg viewBox="0 0 64 64"><path d="M32 3l25 8v19c0 15-11 26-25 31C18 56 7 45 7 30V11z" fill="#0e3fa9" stroke="#d9a418" stroke-width="2.5"/><path d="M19 38l13-20 13 20z" fill="#fff"/><path d="M21 31c4-4 18-4 22 0" stroke="#1d7a4f" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M32 12l2.2 4.4 4.9.7-3.5 3.4.8 4.9-4.4-2.3-4.4 2.3.8-4.9-3.5-3.4 4.9-.7z" fill="#d9a418"/></svg>
+    <small>Gobierno de El Salvador · Ministerio de Educación</small>
+    <h1>Sistema de Registro Académico</h1>
+    <div class="barra-ext"><div id="splashBar"></div></div>
+    <div id="splashMsg">Iniciando…</div>
+  </div>
+</div>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="franja-gob">Gobierno de El Salvador · Ministerio de Educación · República de El Salvador, C.A.</div>
+  <div class="login-envoltura">
+    <div class="login-lateral">
+      <h1 class="display">Registro académico <span>en línea</span> de tu centro escolar</h1>
+      <p>Matrícula con fotografía en tiempo real, asistencia, calificaciones, conducta y constancias oficiales — sincronizado con Google Sheets y respaldado por el Ministerio de Educación.</p>
+    </div>
+    <div class="login-derecha">
+      <div class="tarjeta-login">
+        <h2>Sistema de Registro Académico</h2>
+        <div class="sub" id="loginInstitucion">Ingresá tus credenciales para continuar</div>
+        <div id="loginError"></div>
+        <form id="loginForm">
+          <div class="campo"><label>Usuario</label><input id="inpUser" autocomplete="username" placeholder="admin" required></div>
+          <div class="campo"><label>Contraseña</label><input id="inpPass" type="password" autocomplete="current-password" placeholder="••••••" required></div>
+          <button class="btn btn-azul btn-full" type="submit">Iniciar sesión →</button>
+        </form>
+        <div class="mini-nota">🔒 Datos sincronizados automáticamente con la hoja de cálculo de Google</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APLICACIÓN ================= -->
+<div id="app">
+  <div class="franja-gob app">Gobierno de El Salvador · Ministerio de Educación · <span id="franjaAnio"></span></div>
+
+  <aside class="sidebar">
+    <div class="marca">
+      <svg viewBox="0 0 64 64"><path d="M32 3l25 8v19c0 15-11 26-25 31C18 56 7 45 7 30V11z" fill="#0e3fa9" stroke="#d9a418" stroke-width="2.5"/><path d="M19 38l13-20 13 20z" fill="#fff"/><path d="M32 12l2.2 4.4 4.9.7-3.5 3.4.8 4.9-4.4-2.3-4.4 2.3.8-4.9-3.5-3.4 4.9-.7z" fill="#d9a418"/></svg>
+      <div><b>Registro<br>Académico</b><small id="ladoAnio">MINED · SV</small></div>
+    </div>
+    <button class="navitem activo" data-vista="panel">📊 <span>Panel principal</span></button>
+    <button class="navitem" data-vista="estudiantes">🎓 <span>Registro de estudiantes</span></button>
+    <button class="navitem" data-vista="asistencia">🗓️ <span>Asistencia</span></button>
+    <button class="navitem" data-vista="notas">📚 <span>Calificaciones</span></button>
+    <button class="navitem" data-vista="conducta">⭐ <span>Conducta (IA)</span></button>
+    <button class="navitem" data-vista="constancias">📜 <span>Constancias</span></button>
+    <button class="navitem" data-vista="config">⚙️ <span>Configuración</span></button>
+    <div class="lado-pie" id="ladoPie">Versión 3.1 · Hoja de Google</div>
+  </aside>
+
+  <header class="topbar">
+    <h2 id="topTitle" class="display">Panel principal</h2>
+    <span class="pill"><span class="punto" id="connDot"></span><span id="connTexto">Conectado</span></span>
+    <button class="btn btn-linea" id="btnSync" style="padding:.45rem .9rem">⟳ Sincronizar</button>
+    <span id="saveState"></span>
+    <div style="flex:1"></div>
+    <div class="userchip"><div class="avatar" id="userAvatar">A</div><div><b id="userName" style="font-size:.86rem;display:block">Admin</b><small id="userRol" style="color:#63718f">Administrador</small></div></div>
+    <button class="btn btn-fantasma" id="btnLogout" style="padding:.4rem .8rem">Salir</button>
+  </header>
+
+  <main class="contenido">
+
+    <!-- ===== PANEL ===== -->
+    <section class="vista activa" id="vista-panel">
+      <div class="stat-grid">
+        <div class="stat"><small>Estudiantes activos</small><div class="cifra" id="stEstudiantes">0</div></div>
+        <div class="stat verde"><small>Asistencia de hoy</small><div class="cifra" id="stAsisHoy">—</div></div>
+        <div class="stat oro"><small>Constancias emitidas</small><div class="cifra" id="stConstancias">0</div></div>
+        <div class="stat rojo"><small>Promedio general</small><div class="cifra" id="stPromedio">—</div></div>
+      </div>
+      <div class="tarjeta">
+        <h3>Acciones rápidas</h3>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-azul" onclick="nav('estudiantes');nuevoEstudiante()">＋ Nueva matrícula</button>
+          <button class="btn btn-linea" onclick="nav('asistencia')">Pasar asistencia</button>
+          <button class="btn btn-linea" onclick="nav('notas')">Ingresar notas</button>
+          <button class="btn btn-oro" onclick="nav('constancias')">Emitir constancia</button>
+        </div>
+      </div>
+      <div class="tarjeta">
+        <h3>Últimas matrículas registradas</h3>
+        <table class="tabla"><thead><tr><th>Foto</th><th>NIE</th><th>Estudiante</th><th>Grado</th><th>Sección</th><th>Encargado</th></tr></thead>
+        <tbody id="recientesBody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ===== REGISTRO DE ESTUDIANTES ===== -->
+    <section class="vista" id="vista-estudiantes">
+      <div class="tarjeta">
+        <div class="filtros">
+          <div class="campo"><label>Buscar estudiante</label><input id="filtroBuscar" placeholder="Nombre o NIE…" oninput="pintarTablaEstudiantes()"></div>
+          <div class="campo" style="max-width:230px"><label>Grado</label><select id="filtroGrado" onchange="pintarTablaEstudiantes()"></select></div>
+          <button class="btn btn-azul" onclick="nuevoEstudiante()">＋ Nueva matrícula</button>
+          <button class="btn btn-fantasma" onclick="document.getElementById('panelForm').style.display='none'">Ocultar formulario</button>
+        </div>
+        <table class="tabla"><thead><tr><th>Foto</th><th>NIE</th><th>Apellidos, Nombres</th><th>Grado</th><th>Sec.</th><th>Encargado</th><th>Tel. encargado</th><th>Acciones</th></tr></thead>
+        <tbody id="tablaEstBody"></tbody></table>
+      </div>
+
+      <div class="tarjeta" id="panelForm" style="display:none">
+        <h3 id="formTitulo"><span class="num">FICHA</span> Ficha de inscripción y matrícula</h3>
+        <input type="hidden" id="e_id">
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:1.6rem">
+          <div>
+            <h3 style="font-size:.85rem;color:var(--azul)"><span class="num">01</span> Datos del estudiante</h3>
+            <div class="grid3">
+              <div class="campo"><label>NIE *</label><input id="e_nie" placeholder="Número de Identificación Estudiantil"></div>
+              <div class="campo"><label>Apellidos *</label><input id="e_apellidos"></div>
+              <div class="campo"><label>Nombres *</label><input id="e_nombres"></div>
+            </div>
+            <div class="grid4">
+              <div class="campo"><label>Sexo</label><select id="e_sexo"><option>Femenino</option><option>Masculino</option></select></div>
+              <div class="campo"><label>Fecha de nacimiento</label><input id="e_fecha" type="date"></div>
+              <div class="campo"><label>Teléfono del estudiante</label><input id="e_tel" placeholder="0000-0000"></div>
+              <div class="campo"><label>Correo electrónico</label><input id="e_mail" type="email"></div>
+            </div>
+
+            <h3 style="font-size:.85rem;color:var(--azul);margin-top:.6rem"><span class="num">02</span> Dirección</h3>
+            <div class="campo"><label>Dirección</label><input id="e_dir" placeholder="Calle, pasaje, colonia, número…"></div>
+            <div class="grid2">
+              <div class="campo"><label>Departamento</label><select id="e_dep" onchange="cargarMunicipios(this.value)"></select></div>
+              <div class="campo"><label>Municipio</label><input id="e_muni" list="dlMunicipios"></div>
+            </div>
+
+            <h3 style="font-size:.85rem;color:var(--azul);margin-top:.6rem"><span class="num">03</span> Responsable / Padre de familia</h3>
+            <div class="grid3">
+              <div class="campo"><label>Nombre del encargado *</label><input id="e_encargado"></div>
+              <div class="campo"><label>Parentesco</label><select id="e_parentesco"><option>Padre</option><option>Madre</option><option>Abuelo(a)</option><option>Tío(a)</option><option>Hermano(a) mayor</option><option>Tutor legal</option><option>Otro</option></select></div>
+              <div class="campo"><label>Teléfono del encargado *</label><input id="e_telEnc" placeholder="0000-0000"></div>
+            </div>
+
+            <h3 style="font-size:.85rem;color:var(--azul);margin-top:.6rem"><span class="num">04</span> Matrícula: grado, sección y docente</h3>
+            <div class="grid4">
+              <div class="campo"><label>Grado *</label><select id="e_grado"></select></div>
+              <div class="campo"><label>Sección *</label><select id="e_seccion"></select></div>
+              <div class="campo"><label>Repite grado</label><select id="e_repite"><option>No</option><option>Sí</option></select></div>
+              <div class="campo"><label>Fecha de matrícula</label><input id="e_fechaMat" type="date"></div>
+            </div>
+            <div class="grid2">
+              <div class="campo"><label>Docente encargado del grado y sección *</label><input id="e_docente"></div>
+              <div class="campo"><label>Teléfono del docente</label><input id="e_telDoc"></div>
+            </div>
+            <div class="grid2">
+              <div class="campo"><label>Institución de procedencia</label><input id="e_procedencia"></div>
+              <div class="campo"><label>Último grado aprobado</label><input id="e_ultimoGrado"></div>
+            </div>
+
+            <h3 style="font-size:.85rem;color:var(--azul);margin-top:.6rem"><span class="num">05</span> Salud y observaciones</h3>
+            <div class="campo"><label>¿Padece alguna enfermedad? ¿Toma medicamento?</label><textarea id="e_enfermedades" rows="2" placeholder="Ej.: asma, alergias, tratamiento…"></textarea></div>
+            <div class="campo"><label>Observaciones generales</label><textarea id="e_obs" rows="2"></textarea></div>
+
+            <h3 style="font-size:.85rem;color:var(--azul);margin-top:.6rem"><span class="num">06</span> Documentos entregados (requisitos MINED)</h3>
+            <div class="docs-check grid2" id="e_docs"></div>
+          </div>
+
+          <div>
+            <h3 style="font-size:.85rem;color:var(--azul)"><span class="num">📷</span> Fotografía del estudiante</h3>
+            <div id="fotoZona">
+              <div class="cam-panel" id="camPanel" style="display:none">
+                <video id="videoCam" autoplay playsinline muted></video>
+                <div class="scanline"></div>
+              </div>
+              <img id="fotoPreview" src="" alt="" style="display:none">
+              <div id="fotoVacia" style="aspect-ratio:3/4;border:2px dashed var(--linea);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#8a97b5;font-size:.85rem;text-align:center;padding:1rem">Sin fotografía.<br>Activá la cámara o subí una imagen PNG / JPG.</div>
+            </div>
+            <div style="display:grid;gap:.45rem;margin-top:.7rem">
+              <button class="btn btn-azul" type="button" id="btnCam" onclick="activarCamara()">🎥 Activar cámara</button>
+              <button class="btn btn-oro" type="button" id="btnCapturar" onclick="capturarFoto()" style="display:none">📸 Capturar fotografía</button>
+              <button class="btn btn-linea" type="button" onclick="document.getElementById('fileFoto').click()">🖼️ Subir imagen (PNG/JPG)</button>
+              <button class="btn btn-fantasma" type="button" onclick="quitarFoto()">Quitar fotografía</button>
+              <input type="file" id="fileFoto" accept="image/png,image/jpeg" style="display:none" onchange="subirFotoArchivo(this.files[0])">
+            </div>
+            <div class="campo" style="margin-top:1rem"><label>Estado del estudiante</label>
+              <select id="e_estado"><option>Activo</option><option>Inactivo</option><option>Egresado</option><option>Trasladado</option></select></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem;border-top:1px solid var(--linea);padding-top:1rem">
+          <button class="btn btn-fantasma" onclick="document.getElementById('panelForm').style.display='none'">Cancelar</button>
+          <button class="btn btn-azul" onclick="guardarEstudiante()">💾 Guardar matrícula en el servidor</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ASISTENCIA ===== -->
+    <section class="vista" id="vista-asistencia">
+      <div class="tarjeta">
+        <h3><span class="num">DIARIA</span> Control de asistencia manual</h3>
+        <div class="filtros">
+          <div class="campo"><label>Grado</label><select id="a_grado" onchange="pintarAsistencia()"></select></div>
+          <div class="campo" style="max-width:140px"><label>Sección</label><select id="a_seccion" onchange="pintarAsistencia()"></select></div>
+          <div class="campo" style="max-width:190px"><label>Fecha</label><input id="a_fecha" type="date" onchange="pintarAsistencia()"></div>
+          <button class="btn btn-azul" onclick="guardarAsistencia()">💾 Guardar asistencia</button>
+        </div>
+        <p style="font-size:.8rem;color:#63718f;margin-bottom:.7rem"><b>A</b>=Asistencia · <b>F</b>=Falta · <b>R</b>=Retraso · <b>P</b>=Permiso/Justificado. Hacé clic para marcar cada estudiante.</p>
+        <table class="tabla"><thead><tr><th>#</th><th>Estudiante</th><th>NIE</th><th>Marca</th></tr></thead><tbody id="asisBody"></tbody></table>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">MES</span> Resumen mensual</h3>
+        <div class="filtros">
+          <div class="campo" style="max-width:190px"><label>Mes</label><input id="a_mes" type="month" onchange="pintarResumenMes()"></div>
+          <span style="font-size:.8rem;color:#63718f;padding-bottom:.6rem">Usa el grado y sección seleccionados arriba.</span>
+        </div>
+        <table class="tabla"><thead><tr><th>Estudiante</th><th>Asistencias</th><th>Faltas</th><th>Retrasos</th><th>Permisos</th><th>% Asistencia</th></tr></thead><tbody id="resumenBody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ===== CALIFICACIONES ===== -->
+    <section class="vista" id="vista-notas">
+      <div class="tarjeta">
+        <h3><span class="num">NOTAS</span> Ingreso manual de calificaciones (escala 1–<span id="lblEscala">10</span>, mínima <span id="lblMin">6.0</span>)</h3>
+        <div class="filtros">
+          <div class="campo"><label>Grado</label><select id="n_grado" onchange="pintarNotas()"></select></div>
+          <div class="campo" style="max-width:140px"><label>Sección</label><select id="n_seccion" onchange="pintarNotas()"></select></div>
+          <div class="campo" style="max-width:160px"><label>Período</label><select id="n_periodo" onchange="pintarNotas()"></select></div>
+          <div class="campo"><label>Asignatura (escribila)</label><input id="n_materia" list="dlMaterias" placeholder="Ej.: Matemática" onchange="pintarNotas()"></div>
+          <button class="btn btn-azul" onclick="guardarNotas()">💾 Guardar notas</button>
+        </div>
+        <table class="tabla"><thead><tr><th>#</th><th>Estudiante</th><th>NIE</th><th style="max-width:130px">Nota</th></tr></thead><tbody id="notasBody"></tbody></table>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">BOLETA</span> Generar boleta oficial de calificaciones</h3>
+        <div class="filtros">
+          <div class="campo"><label>Estudiante</label><select id="b_estudiante"></select></div>
+          <div class="campo" style="max-width:160px"><label>Año lectivo</label><input id="b_anio"></div>
+          <button class="btn btn-oro" onclick="generarBoleta()">📄 Generar boleta / Imprimir / PDF</button>
+        </div>
+        <datalist id="dlMaterias"></datalist>
+      </div>
+    </section>
+
+    <!-- ===== CONDUCTA ===== -->
+    <section class="vista" id="vista-conducta">
+      <div class="tarjeta">
+        <h3><span class="num">IA</span> Constancia de conducta — redacción asistida</h3>
+        <p style="font-size:.85rem;color:#63718f;margin-bottom:1rem">Elegí al estudiante y el sistema redacta automáticamente el cuerpo completo de la carta con sus datos. Luego podés editarla.</p>
+        <div class="grid3">
+          <div class="campo"><label>Estudiante</label><select id="c_estudiante"></select></div>
+          <div class="campo"><label>Nivel de conducta</label><select id="c_nivel"><option>Sobresaliente</option><option>Muy buena</option><option>Buena</option><option>Regular, con observaciones</option></select></div>
+          <div class="campo"><label>Detalle adicional (opcional)</label><input id="c_obs" placeholder="Ej.: cuadro de honor, participación…"></div>
+        </div>
+        <button class="btn btn-oro" onclick="generarConductaIA()">✨ Generar redacción con IA</button>
+        <div class="campo" style="margin-top:1rem"><label>Cuerpo de la constancia (editable)</label><textarea id="c_texto" rows="9"></textarea></div>
+        <div style="display:flex;gap:.6rem">
+          <button class="btn btn-azul" onclick="emitirConducta()">📄 Vista, imprimir y PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONSTANCIAS ===== -->
+    <section class="vista" id="vista-constancias">
+      <div class="tarjeta">
+        <h3><span class="num">ESTUDIO</span> Constancia de permanencia / estudio</h3>
+        <div class="grid4">
+          <div class="campo"><label>Estudiante</label><select id="ce_estudiante"></select></div>
+          <div class="campo"><label>Desde el año</label><input id="ce_desde" placeholder="2023"></div>
+          <div class="campo"><label>Hasta el año</label><input id="ce_hasta" placeholder="2026"></div>
+          <div class="campo"><label>¿Estudia actualmente?</label><select id="ce_actual"><option>Sí</option><option>No</option></select></div>
+        </div>
+        <div class="campo"><label>Para qué fines</label><input id="ce_motivo" value="para los usos que a la persona interesada convenga"></div>
+        <button class="btn btn-azul" onclick="emitirConstEstudio()">📄 Generar / Imprimir / PDF</button>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">NOTAS</span> Constancia de calificaciones</h3>
+        <div class="filtros">
+          <div class="campo"><label>Estudiante</label><select id="cn_estudiante"></select></div>
+          <div class="campo" style="max-width:170px"><label>Año lectivo</label><input id="cn_anio"></div>
+          <button class="btn btn-azul" onclick="emitirConstNotas()">📄 Generar / Imprimir / PDF</button>
+        </div>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">HISTORIAL</span> Constancias emitidas</h3>
+        <table class="tabla"><thead><tr><th>Fecha</th><th>Tipo</th><th>Estudiante</th><th>Detalle</th><th>Emitida por</th></tr></thead><tbody id="historialBody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ===== CONFIGURACIÓN ===== -->
+    <section class="vista" id="vista-config">
+      <div class="tarjeta">
+        <h3><span class="num">01</span> Datos de la institución</h3>
+        <div class="grid2">
+          <div class="campo"><label>Nombre de la institución</label><input id="cfg_institucion"></div>
+          <div class="campo"><label>Año lectivo</label><input id="cfg_anio"></div>
+        </div>
+        <div class="grid3">
+          <div class="campo"><label>Dirección</label><input id="cfg_direccion"></div>
+          <div class="campo"><label>Teléfono</label><input id="cfg_telefono"></div>
+          <div class="campo"><label>Correo</label><input id="cfg_correo"></div>
+        </div>
+        <div class="grid3">
+          <div class="campo"><label>Municipio</label><input id="cfg_municipio" list="dlMunicipios"></div>
+          <div class="campo"><label>Departamento</label><select id="cfg_departamento"></select></div>
+          <div class="campo"><label>Nombre del Director(a)</label><input id="cfg_director"></div>
+        </div>
+        <div class="grid4">
+          <div class="campo"><label>Número de períodos</label><select id="cfg_periodos"><option>3</option><option>4</option></select></div>
+          <div class="campo"><label>Escala máxima</label><input id="cfg_max" value="10"></div>
+          <div class="campo"><label>Nota mínima de aprobación</label><input id="cfg_min" value="6.0"></div>
+          <div class="campo"><label>Lema</label><input id="cfg_lema"></div>
+        </div>
+        <div class="grid2">
+          <div class="campo"><label>Logo de la institución (PNG/JPG)</label><input type="file" id="cfg_logo" accept="image/png,image/jpeg">
+            <img id="cfg_logoPrev" style="max-height:70px;margin-top:.5rem;display:none"></div>
+          <div class="campo"><label>Escudo de El Salvador (PNG/JPG)</label><input type="file" id="cfg_escudo" accept="image/png,image/jpeg">
+            <img id="cfg_escudoPrev" style="max-height:70px;margin-top:.5rem;display:none"></div>
+        </div>
+        <button class="btn btn-azul" onclick="guardarConfig()">💾 Guardar configuración en el servidor</button>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">02</span> Usuarios y colaboradores</h3>
+        <table class="tabla"><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th></th></tr></thead><tbody id="usuariosBody"></tbody></table>
+        <h3 style="margin-top:1.3rem"><span class="num">＋</span> Crear colaborador</h3>
+        <div class="grid4">
+          <div class="campo"><label>Usuario</label><input id="u_usuario"></div>
+          <div class="campo"><label>Nombre completo</label><input id="u_nombre"></div>
+          <div class="campo"><label>Contraseña</label><input id="u_pass" type="password"></div>
+          <div class="campo"><label>Rol</label><select id="u_rol"><option>Colaborador</option><option>Administrador</option></select></div>
+        </div>
+        <button class="btn btn-azul" onclick="crearUsuario()">Crear colaborador</button>
+      </div>
+      <div class="tarjeta">
+        <h3><span class="num">03</span> Mi contraseña y conexión</h3>
+        <div class="grid3">
+          <div class="campo"><label>Contraseña actual</label><input id="pw_actual" type="password"></div>
+          <div class="campo"><label>Nueva contraseña</label><input id="pw_nueva" type="password"></div>
+          <div class="campo" style="align-self:flex-end"><button class="btn btn-oro" onclick="cambiarPw()">Cambiar contraseña</button></div>
+        </div>
+        <div class="campo"><label>URL activa del servidor (se edita únicamente en el código)</label>
+          <input id="cfg_url" readonly style="background:#f2f5fb;color:#4a5b7d;font-size:.8rem"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL DOCUMENTO -->
+<div class="modal-fondo" id="docModal">
+  <div class="modal">
+    <div class="modal-cab"><h3 id="docTitulo">Documento</h3><button class="btn btn-fantasma" onclick="cerrarDoc()">✕ Cerrar</button></div>
+    <div class="modal-cuerpo"><div id="docPaper"></div></div>
+    <div class="modal-pie"><button class="btn btn-azul" onclick="imprimirDoc()">🖨️ Imprimir / Exportar PDF</button></div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAR -->
+<div class="modal-fondo" id="confirmModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-cab"><h3>Confirmar acción</h3></div>
+    <div style="padding:1.3rem" id="confirmMsg"></div>
+    <div class="modal-pie"><button class="btn btn-fantasma" onclick="cerrarConfirm()">Cancelar</button>
+    <button class="btn btn-rojo" id="btnConfirmYes">Sí, continuar</button></div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+<div id="printDoc"></div>
+<datalist id="dlMunicipios"></datalist>
+
+<script>
+/*▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄*/
+/*▀                                                                                       ▀*/
+/*    🔴🔴🔴   ROTULO DE CONFIGURACION — ESTE ES EL UNICO LUGAR QUE DEBES EDITAR   🔴🔴🔴   */
+/*                                                                                         */
+/*    PASO 1: Ve a Google Apps Script → Implementar → Aplicación web                      */
+/*            y copia la URL que termina en  /exec                                        */
+/*                                                                                         */
+/*    PASO 2: En la linea que esta AQUI ABAJO (marcada con flechas ⬅⬅⬅),                  */
+/*            borra el texto   PEGA_AQUI_TU_URL_DE_APPS_SCRIPT                            */
+/*            y pega TU URL entre las comillas. Debe quedar asi:                          */
+/*                                                                                         */
+/*            const URL_IMPLEMENTACION = "https://script.google.com/macros/s/XXXX/exec";  */
+/*                                                                                         */
+/*    PASO 3: Guarda este archivo index.html y subelo (o actualizalo) en Vercel.          */
+/*                                                                                         */
+/*    ✅ v3.1: la URL ya NO se guarda en el navegador: siempre manda la de este rotulo.   */
+/*       Si el servidor fuera una version antigua, el sistema se adapta solo:             */
+/*       pide login primero y luego descarga los datos con sesion.                        */
+/*                                                                                         */
+/*▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄*/
+
+/*⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇  LA LINEA QUE DEBES EDITAR ES LA SIGUIENTE  ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇*/
+
+const URL_IMPLEMENTACION = "https://script.google.com/macros/s/AKfycbzqyU6IJzQ30gEyFbccbVkmnxKbMseMWfdaakjEFh7Q96dWPHaFPCX6m3pvw20GNVKL/exec";   /* ⬅⬅ SUSTITUYE AQUI LA URL ⬅⬅⬅ */
+
+/*⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆  FIN DEL ROTULO — CONTINUA EL SISTEMA  ⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆*/
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const App={url:(URL_IMPLEMENTACION||'').trim(), token:'', user:null, legacy:false, enArranque:false,
+  serverVersion:'', cfg:{}, estudiantes:[], asistencia:[], calificaciones:[], constancias:[], usuarios:[],
+  fotoBase64:'', fotoEliminada:false};
+
+const GRADOS=['Parvularia 4 años','Parvularia 5 años','Parvularia 6 años','1° Grado','2° Grado','3° Grado','4° Grado','5° Grado','6° Grado','7° Grado','8° Grado','9° Grado','1° Año de Bachillerato','2° Año de Bachillerato','3° Año de Bachillerato'];
+const SECCIONES=['A','B','C','D','E'];
+const DEPARTAMENTOS=['Ahuachapán','Cabañas','Chalatenango','Cuscatlán','La Libertad','La Paz','La Unión','Morazán','San Miguel','San Salvador','San Vicente','Santa Ana','Sonsonate','Usulután'];
+const MUNIS={'Ahuachapán':['Ahuachapán Centro','Ahuachapán Norte','Ahuachapán Sur'],'Cabañas':['Cabañas Este','Cabañas Oeste'],'Chalatenango':['Chalatenango Centro','Chalatenango Norte','Chalatenango Sur'],'Cuscatlán':['Cuscatlán Norte','Cuscatlán Sur'],'La Libertad':['La Libertad Centro','La Libertad Costa','La Libertad Este','La Libertad Norte','La Libertad Oeste','La Libertad Sur'],'La Paz':['La Paz Centro','La Paz Este','La Paz Oeste'],'La Unión':['La Unión Norte','La Unión Sur'],'Morazán':['Morazán Norte','Morazán Sur'],'San Miguel':['San Miguel Centro','San Miguel Norte','San Miguel Oeste'],'San Salvador':['San Salvador Centro','San Salvador Este','San Salvador Norte','San Salvador Oeste','San Salvador Sur'],'San Vicente':['San Vicente Norte','San Vicente Sur'],'Santa Ana':['Santa Ana Centro','Santa Ana Este','Santa Ana Norte','Santa Ana Oeste'],'Sonsonate':['Sonsonate Centro','Sonsonate Este','Sonsonate Norte','Sonsonate Sur'],'Usulután':['Usulután Centro','Usulután Este','Usulután Norte']};
+const DOCUMENTOS=['Partida de nacimiento (original y copia)','DUI del padre, madre o responsable','NIE del estudiante','Tarjeta de vacunación / carné de salud','Certificado de notas del año anterior','Constancia de buena conducta (procedencia)','Comprobante de domicilio','Dos fotografías tamaño carné'];
+
+/* ---------- UTILIDADES ---------- */
+function toast(msg,tipo){const t=document.createElement('div');t.className='toast '+(tipo||'');t.textContent=msg;$('toasts').appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .4s';setTimeout(()=>t.remove(),400)},3600);}
+function confirmar(msg,cb){$('confirmMsg').textContent=msg;$('confirmModal').classList.add('abierto');$('btnConfirmYes').onclick=()=>{cerrarConfirm();cb();};}
+function cerrarConfirm(){$('confirmModal').classList.remove('abierto');}
+function nombreCompleto(e){return (e.apellidos||'')+', '+(e.nombres||'');}
+
+/* ---------- COMUNICACIÓN CON EL SERVIDOR (v3.1) ----------
+   · POST con 2 reintentos + respaldo GET.
+   · Si el servidor es antiguo y pide sesión, se marca err.expirada
+     y el arranque se adapta: login primero, datos después.        */
+async function api(action, payload){
+  if(!App.url || App.url.indexOf('PEGA_AQUI')===0){
+    throw new Error('Falta configurar la URL. Editá el index.html en el RÓTULO DE CONFIGURACIÓN (Ctrl+F → PEGA_AQUI).');
+  }
+  const cuerpo = JSON.stringify({action, payload:payload||{}, usuario:(App.user&&App.user.usuario)||'sistema', token:App.token||''});
+  const leer = async r => {
+    const j = await r.json();
+    if(!j.ok){
+      const err = new Error(j.error||'Error del servidor'); err.servidor = true;
+      if(/Sesión expirada/i.test(err.message)){
+        err.expirada = true;
+        App.token=''; App.user=null; sessionStorage.removeItem('SESION');
+        if(!App.enArranque){ toast('La sesión expiró, iniciá sesión nuevamente','error'); mostrarLogin(); }
+      }
+      throw err;
+    }
+    return j;
+  };
+  const pedir = async (url, ops) => {
+    const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 20000);
+    try{ const r = await fetch(url, Object.assign({signal:ctrl.signal}, ops)); return await leer(r); }
+    finally{ clearTimeout(t); }
+  };
+  let falloRed = null;
+  for(let intento=1; intento<=2; intento++){
+    try{ return await pedir(App.url, {method:'POST', body:cuerpo}); }
+    catch(err){ if(err.servidor) throw err; falloRed = err; await new Promise(r=>setTimeout(r,400)); }
+  }
+  try{
+    const qs = '?action='+encodeURIComponent(action)+'&data='+encodeURIComponent(cuerpo)+'&t='+Date.now();
+    return await pedir(App.url+qs, {method:'GET', cache:'no-store'});
+  }catch(err){ if(err.servidor) throw err; }
+  throw new Error('No se pudo conectar con la hoja de cálculo. Revisá: 1) que la URL termine en /exec, 2) que la implementación diga "Ejecutar como: Yo" y "Acceso: Cualquier persona", 3) que exista UNA sola implementación activa con la NUEVA VERSIÓN del Code.gs. Detalle: '+((falloRed&&falloRed.message)||'sin respuesta del servidor'));
+}
+function setGuardando(txt){$('saveState').textContent=txt||'● Guardando en el servidor…';$('saveState').style.color='#b3830e';}
+function setGuardado(){const h=new Date().toLocaleTimeString('es-SV',{hour:'2-digit',minute:'2-digit'});$('saveState').textContent='✓ Guardado en el servidor · '+h;$('saveState').style.color='#1d7a4f';}
+
+/* ---------- CARGA DE DATOS ---------- */
+async function cargarPrivado(){
+  App.estudiantes=(await api('estudiantes')).datos;
+  App.asistencia=(await api('asistencia')).datos;
+  App.calificaciones=(await api('calificaciones')).datos;
+  App.constancias=(await api('constancias')).datos;
+  App.legacy=false;
+}
+
+/* ---------- SINCRONIZACIÓN / ARRANQUE ---------- */
+async function paso(pct,msg){$('splashBar').style.width=pct+'%';$('splashMsg').textContent=msg;await new Promise(r=>setTimeout(r,200));}
+async function sincronizar(){
+  $('splash').style.display='flex'; $('splash').style.opacity='1'; $('splashBar').style.width='0%';
+  App.enArranque=true;
+  let exito=false;
+  try{
+    if(!App.url || App.url.indexOf('PEGA_AQUI')===0){
+      await paso(100,'⚠ Editá el index.html: pegá tu URL en el RÓTULO DE CONFIGURACIÓN (Ctrl+F → PEGA_AQUI)');
+      $('connTexto').textContent='Sin conexión'; $('connDot').className='punto rojo';
+    } else {
+      await paso(8,'Verificando versión del servidor…');
+      let info={};
+      try{
+        const ctrl=new AbortController(); const tt=setTimeout(()=>ctrl.abort(),15000);
+        const ri=await fetch(App.url,{cache:'no-store',signal:ctrl.signal}); clearTimeout(tt);
+        info=await ri.json();
+      }catch(e){ info={}; }
+      App.serverVersion=String(info.version||'');
+      await paso(20,'Conectando con el servidor…');
+      const ping=await api('ping');
+      App.serverVersion=String(ping.version||App.serverVersion||'');
+      await paso(32,'Descargando configuración…');
+      App.cfg=(await api('getConfig')).config;
+      await paso(48,'Descargando estudiantes…');
+      try{
+        await cargarPrivado();
+      }catch(err2){
+        if(err2.expirada){
+          /* Servidor antiguo: pedirá login primero y luego se cargará todo con sesión */
+          App.legacy=true;
+          App.estudiantes=[];App.asistencia=[];App.calificaciones=[];App.constancias=[];
+        } else throw err2;
+      }
+      await paso(100,'✓ Sincronizado correctamente con el servidor');
+      $('connTexto').textContent='Sincronizado correctamente'; $('connDot').className='punto';
+      exito=true;
+      if(App.legacy){ App.user=null; App.token=''; sessionStorage.removeItem('SESION'); }
+      else if(App.user){ entrarApp(); }
+    }
+  }catch(err){
+    await paso(100,'✗ Error de sincronización');
+    $('connTexto').textContent='Sin conexión'; $('connDot').className='punto rojo';
+    const urlCorta=App.url.length>64?App.url.slice(0,64)+'…':App.url;
+    $('splashMsg').innerHTML='✗ '+esc(err.message)+
+      '<small>URL en uso: '+esc(urlCorta)+' · Versión del servidor: '+esc(App.serverVersion||'no detectada')+
+      ' · Abrí la URL en otra pestaña: debe mostrar "version":"3.1".</small>'+
+      '<button class="btn btn-oro" style="margin-top:.9rem" onclick="sincronizar()">⟳ Reintentar sincronización</button>';
+  }
+  App.enArranque=false;
+  if(exito){ setTimeout(()=>{$('splash').style.opacity='0'; setTimeout(()=>$('splash').style.display='none',500); },600); }
+  aplicarConfig();
+  return exito;
+}
+
+/* ---------- LOGIN ---------- */
+function mostrarLogin(){ $('app').style.display='none'; $('loginScreen').style.display='block'; }
+function entrarApp(){
+  $('loginScreen').style.display='none'; $('app').style.display='grid';
+  $('userName').textContent=App.user.nombre||App.user.usuario;
+  $('userRol').textContent=App.user.rol;
+  $('userAvatar').textContent=(App.user.nombre||App.user.usuario).slice(0,2).toUpperCase();
+  nav('panel');
+}
+$('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault(); $('loginError').style.display='none';
+  try{
+    const r=await api('login',{usuario:$('inpUser').value,contrasena:$('inpPass').value});
+    App.user=r.usuario; App.token=r.token||'';
+    sessionStorage.setItem('SESION',JSON.stringify({usuario:r.usuario,token:App.token}));
+    await cargarPrivado();
+    entrarApp(); pintarTodo();
+    toast('✓ Sincronizado correctamente con el servidor','ok');
+  }catch(err){ $('loginError').style.display='block'; $('loginError').textContent=err.message; }
+});
+$('btnLogout').onclick=()=>{sessionStorage.removeItem('SESION');App.token='';App.user=null;mostrarLogin();};
+
+/* ---------- NAVEGACIÓN ---------- */
+function nav(v){
+  document.querySelectorAll('.navitem').forEach(b=>b.classList.toggle('activo',b.dataset.vista===v));
+  document.querySelectorAll('.vista').forEach(s=>s.classList.remove('activa'));
+  $('vista-'+v).classList.add('activa');
+  $('topTitle').textContent={panel:'Panel principal',estudiantes:'Registro de estudiantes',asistencia:'Asistencia',notas:'Calificaciones',conducta:'Conducta',constancias:'Constancias',config:'Configuración del sistema'}[v];
+  if(v==='panel')renderPanel(); if(v==='estudiantes')pintarTablaEstudiantes();
+  if(v==='asistencia')pintarAsistencia(); if(v==='notas')pintarNotas();
+  if(v==='constancias')pintarHistorial(); if(v==='config')pintarConfig();
+  if(v==='notas'||v==='conducta'||v==='constancias'){llenarSelectsEstudiantes();}
+}
+document.querySelectorAll('.navitem').forEach(b=>b.onclick=()=>nav(b.dataset.vista));
+$('btnSync').onclick=async()=>{ const ok=await sincronizar(); if(ok){ toast('✓ Sincronizado correctamente con el servidor','ok'); pintarTodo(); } };
+
+/* ---------- CONFIGURACIÓN ---------- */
+function aplicarConfig(){
+  const c=App.cfg||{};
+  $('franjaAnio').textContent='Año lectivo '+(c.anioLectivo||new Date().getFullYear());
+  $('ladoAnio').textContent='Año lectivo '+(c.anioLectivo||'');
+  $('loginInstitucion').textContent=c.institucion&&c.institucion.indexOf('___')<0?c.institucion:'Ingresá tus credenciales para continuar';
+  $('lblEscala').textContent=c.escalaMax||'10'; $('lblMin').textContent=c.notaAprobacion||'6.0';
+  $('b_anio').value=$('b_anio').value||(c.anioLectivo||new Date().getFullYear());
+  $('cn_anio').value=$('cn_anio').value||(c.anioLectivo||new Date().getFullYear());
+}
+function pintarConfig(){
+  const c=App.cfg||{};
+  $('cfg_institucion').value=c.institucion||''; $('cfg_anio').value=c.anioLectivo||'';
+  $('cfg_direccion').value=c.direccion||''; $('cfg_telefono').value=c.telefono||''; $('cfg_correo').value=c.correo||'';
+  $('cfg_municipio').value=c.municipio||''; $('cfg_departamento').value=c.departamento||''; $('cfg_director').value=c.director||'';
+  $('cfg_periodos').value=c.numPeriodos||'4'; $('cfg_max').value=c.escalaMax||'10'; $('cfg_min').value=c.notaAprobacion||'6.0'; $('cfg_lema').value=c.lema||'';
+  $('cfg_url').value=App.url;
+  if(c.logoUrl){$('cfg_logoPrev').src=c.logoUrl;$('cfg_logoPrev').style.display='block';}
+  if(c.escudoUrl){$('cfg_escudoPrev').src=c.escudoUrl;$('cfg_escudoPrev').style.display='block';}
+  pintarUsuarios();
+}
+function comprimir(file,maxW){return new Promise(res=>{const fr=new FileReader();fr.onload=()=>{const img=new Image();img.onload=()=>{const s=Math.min(1,maxW/img.width);const c=document.createElement('canvas');c.width=img.width*s;c.height=img.height*s;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,c.width,c.height);res(c.toDataURL(file.type==='image/png'?'image/png':'image/jpeg',.88));};img.src=fr.result;};fr.readAsDataURL(file);});}
+$('cfg_logo').onchange=async e=>{if(e.target.files[0]){const d=await comprimir(e.target.files[0],480);$('cfg_logo').dataset.img=d;$('cfg_logoPrev').src=d;$('cfg_logoPrev').style.display='block';}};
+$('cfg_escudo').onchange=async e=>{if(e.target.files[0]){const d=await comprimir(e.target.files[0],480);$('cfg_escudo').dataset.img=d;$('cfg_escudoPrev').src=d;$('cfg_escudoPrev').style.display='block';}};
+async function guardarConfig(){
+  setGuardando();
+  const cambios={institucion:$('cfg_institucion').value,anioLectivo:$('cfg_anio').value,direccion:$('cfg_direccion').value,
+    telefono:$('cfg_telefono').value,correo:$('cfg_correo').value,municipio:$('cfg_municipio').value,
+    departamento:$('cfg_departamento').value,director:$('cfg_director').value,numPeriodos:$('cfg_periodos').value,
+    escalaMax:$('cfg_max').value,notaAprobacion:$('cfg_min').value,lema:$('cfg_lema').value};
+  const imagenes=[];
+  if($('cfg_logo').dataset.img)imagenes.push({clave:'logoUrl',nombre:'LOGO',data:$('cfg_logo').dataset.img});
+  if($('cfg_escudo').dataset.img)imagenes.push({clave:'escudoUrl',nombre:'ESCUDO',data:$('cfg_escudo').dataset.img});
+  try{const r=await api('guardarConfig',{cambios,imagenes});App.cfg=r.config;aplicarConfig();setGuardado();toast('Configuración guardada en el servidor','ok');}
+  catch(err){setGuardado();toast(err.message,'error');}
+}
+
+/* ---------- USUARIOS ---------- */
+async function pintarUsuarios(){
+  try{App.usuarios=(await api('usuarios')).datos;}catch(e){}
+  $('usuariosBody').innerHTML=App.usuarios.map(u=>`<tr><td><b>${esc(u.usuario)}</b></td><td>${esc(u.nombre)}</td><td><span class="chip ${u.rol==='Administrador'?'chip-oro':'chip-azul'}">${esc(u.rol)}</span></td>
+  <td>${u.activo==='SI'?'<span class="chip chip-verde">Activo</span>':'<span class="chip chip-rojo">Inactivo</span>'}</td>
+  <td class="acciones">${u.usuario!=='admin'?`<button class="borrar" title="Eliminar" onclick="eliminarUsuario('${esc(u.usuario)}')">🗑</button>`:''}</td></tr>`).join('');
+}
+async function crearUsuario(){
+  const u={usuario:$('u_usuario').value.trim(),nombre:$('u_nombre').value.trim(),contrasena:$('u_pass').value,rol:$('u_rol').value};
+  if(!u.usuario){toast('Escribí el nombre de usuario','error');return;}
+  setGuardando(); try{await api('crearUsuario',{usuario:u});setGuardado();toast('Colaborador creado','ok');$('u_usuario').value=$('u_nombre').value=$('u_pass').value='';pintarUsuarios();}catch(err){setGuardado();toast(err.message,'error');}
+}
+function eliminarUsuario(u){confirmar('¿Eliminar al usuario '+u+'?',async()=>{setGuardando();try{await api('eliminarUsuario',{usuario:u});setGuardado();pintarUsuarios();toast('Usuario eliminado','ok');}catch(err){setGuardado();toast(err.message,'error');}});}
+async function cambiarPw(){
+  if(!App.user){toast('Iniciá sesión primero','error');return;}
+  setGuardando();
+  try{await api('cambiarContrasena',{usuario:App.user.usuario,actual:$('pw_actual').value,nueva:$('pw_nueva').value});setGuardado();toast('Contraseña actualizada','ok');$('pw_actual').value=$('pw_nueva').value='';}
+  catch(err){setGuardado();toast(err.message,'error');}
+}
+
+/* ---------- PANEL ---------- */
+function contarUp(el,fin,dec){const ini=0,dur=700,t0=performance.now();function f(t){const p=Math.min(1,(t-t0)/dur);const v=ini+(fin-ini)*(1-Math.pow(1-p,3));el.textContent=dec?v.toFixed(1):Math.round(v);if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+function renderPanel(){
+  const activos=App.estudiantes.filter(e=>e.estado==='Activo').length;
+  contarUp($('stEstudiantes'),activos);
+  const hoy=new Date().toISOString().slice(0,10);
+  const deHoy=App.asistencia.filter(a=>a.fecha===hoy);
+  $('stAsisHoy').textContent=deHoy.length?Math.round(deHoy.filter(a=>a.estado==='A').length/deHoy.length*100)+'%':'—';
+  contarUp($('stConstancias'),App.constancias.length);
+  const notas=App.calificaciones.map(c=>parseFloat(c.nota)).filter(n=>!isNaN(n));
+  $('stPromedio').textContent=notas.length?(notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(1):'—';
+  const rec=[...App.estudiantes].reverse().slice(0,6);
+  $('recientesBody').innerHTML=rec.map(e=>`<tr><td>${e.fotoUrl?`<img class="miniatura" src="${e.fotoUrl}">`:'<div class="miniatura"></div>'}</td><td>${esc(e.nie)}</td><td><b>${esc(nombreCompleto(e))}</b></td><td>${esc(e.grado)}</td><td>${esc(e.seccion)}</td><td>${esc(e.nombreEncargado)}</td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:#8a97b5">Aún no hay estudiantes registrados. ¡Creá la primera matrícula!</td></tr>';
+}
+
+/* ---------- ESTUDIANTES ---------- */
+function llenarOpciones(){
+  const sel=(id,arr,conTodos)=>{$(id).innerHTML=(conTodos?'<option value="">Todos</option>':'')+arr.map(g=>`<option>${esc(g)}</option>`).join('');};
+  sel('filtroGrado',GRADOS,true); sel('e_grado',GRADOS); sel('e_seccion',SECCIONES);
+  sel('a_grado',GRADOS); sel('a_seccion',SECCIONES); sel('n_grado',GRADOS); sel('n_seccion',SECCIONES);
+  $('e_dep').innerHTML=DEPARTAMENTOS.map(d=>`<option>${d}</option>`).join('');
+  $('cfg_departamento').innerHTML='<option value=""></option>'+DEPARTAMENTOS.map(d=>`<option>${d}</option>`).join('');
+  $('e_docs').innerHTML=DOCUMENTOS.map((d,i)=>`<label><input type="checkbox" value="${esc(d)}"> ${esc(d)}</label>`).join('');
+  $('n_periodo').innerHTML=Array.from({length:+(App.cfg.numPeriodos||4)},(_,i)=>`<option value="${i+1}">Período ${i+1}</option>`).join('');
+  const p=new Date(); $('a_fecha').value=p.toISOString().slice(0,10); $('a_mes').value=p.toISOString().slice(0,7);
+  $('e_fechaMat').value=p.toISOString().slice(0,10);
+}
+function cargarMunicipios(dep){$('dlMunicipios').innerHTML=(MUNIS[dep]||[]).map(m=>`<option value="${esc(m)}">`).join('');}
+function pintarTablaEstudiantes(){
+  const q=($('filtroBuscar').value||'').toLowerCase(), g=$('filtroGrado').value;
+  const lista=App.estudiantes.filter(e=>(!g||e.grado===g)&&(!q||nombreCompleto(e).toLowerCase().includes(q)||(e.nie||'').toLowerCase().includes(q)));
+  $('tablaEstBody').innerHTML=lista.map(e=>`<tr>
+    <td>${e.fotoUrl?`<img class="miniatura" src="${e.fotoUrl}">`:'<div class="miniatura"></div>'}</td>
+    <td>${esc(e.nie)}</td><td><b>${esc(nombreCompleto(e))}</b><br><small style="color:#63718f">${esc(e.estado||'')}</small></td>
+    <td>${esc(e.grado)}</td><td>${esc(e.seccion)}</td><td>${esc(e.nombreEncargado)}</td><td>${esc(e.telefonoEncargado)}</td>
+    <td class="acciones"><button title="Editar" onclick="editarEstudiante('${esc(e.id)}')">✏️</button>
+    <button title="Imprimir ficha / PDF" onclick="imprimirFicha('${esc(e.id)}')">🖨️</button>
+    <button class="borrar" title="Eliminar" onclick="eliminarEstudiante('${esc(e.id)}')">🗑</button></td></tr>`).join('')
+    ||'<tr><td colspan="8" style="text-align:center;color:#8a97b5">Sin resultados.</td></tr>';
+}
+function nuevoEstudiante(){
+  $('panelForm').style.display='block'; $('formTitulo').innerHTML='<span class="num">NUEVA</span> Ficha de inscripción y matrícula';
+  document.querySelectorAll('#panelForm input, #panelForm textarea').forEach(i=>{if(i.type!=='checkbox'&&!i.id.startsWith('file')&&!['e_id','e_fechaMat','e_estado'].includes(i.id))i.value='';});
+  document.querySelectorAll('#e_docs input').forEach(c=>c.checked=false);
+  $('e_id').value='EST'+Date.now(); $('e_fechaMat').value=new Date().toISOString().slice(0,10);
+  App.fotoBase64=''; App.fotoEliminada=false; quitarFoto(true);
+  $('panelForm').scrollIntoView({behavior:'smooth'});
+}
+function editarEstudiante(id){
+  const e=App.estudiantes.find(x=>String(x.id)===String(id)); if(!e)return;
+  nuevoEstudiante(); $('formTitulo').innerHTML='<span class="num">EDITAR</span> Actualización de ficha — '+esc(nombreCompleto(e));
+  const set=(k,v)=>{const el=$(k);if(el)el.value=v||'';};
+  set('e_id',e.id);set('e_nie',e.nie);set('e_apellidos',e.apellidos);set('e_nombres',e.nombres);set('e_sexo',e.sexo);
+  set('e_fecha',e.fechaNacimiento);set('e_tel',e.telefono);set('e_mail',e.correo);set('e_dir',e.direccion);
+  set('e_dep',e.departamento);cargarMunicipios(e.departamento);set('e_muni',e.municipio);set('e_grado',e.grado);
+  set('e_seccion',e.seccion);set('e_repite',e.repite);set('e_fechaMat',e.fechaMatricula);set('e_docente',e.nombreDocente);
+  set('e_telDoc',e.telefonoDocente);set('e_procedencia',e.institucionProcedencia);set('e_ultimoGrado',e.ultimoGradoAprobado);
+  set('e_encargado',e.nombreEncargado);set('e_parentesco',e.parentesco);set('e_telEnc',e.telefonoEncargado);
+  set('e_enfermedades',e.enfermedades);set('e_obs',e.observaciones);set('e_estado',e.estado);
+  document.querySelectorAll('#e_docs input').forEach(c=>c.checked=String(e.documentos||'').includes(c.value));
+  App.fotoBase64='';App.fotoEliminada=false;
+  if(e.fotoUrl){$('fotoPreview').src=e.fotoUrl;$('fotoPreview').style.display='block';$('fotoVacia').style.display='none';}
+  $('panelForm').style.display='block'; $('panelForm').scrollIntoView({behavior:'smooth'});
+}
+async function guardarEstudiante(){
+  const g=id=>$(id).value.trim();
+  const est={id:g('e_id')||('EST'+Date.now()),nie:g('e_nie'),apellidos:g('e_apellidos'),nombres:g('e_nombres'),
+    sexo:g('e_sexo'),fechaNacimiento:g('e_fecha'),telefono:g('e_tel'),correo:g('e_mail'),direccion:g('e_dir'),
+    municipio:g('e_muni'),departamento:g('e_dep'),grado:g('e_grado'),seccion:g('e_seccion'),repite:g('e_repite'),
+    institucionProcedencia:g('e_procedencia'),ultimoGradoAprobado:g('e_ultimoGrado'),nombreEncargado:g('e_encargado'),
+    parentesco:g('e_parentesco'),telefonoEncargado:g('e_telEnc'),nombreDocente:g('e_docente'),telefonoDocente:g('e_telDoc'),
+    enfermedades:g('e_enfermedades'),observaciones:g('e_obs'),estado:g('e_estado'),fechaMatricula:g('e_fechaMat'),
+    documentos:[...document.querySelectorAll('#e_docs input:checked')].map(c=>c.value).join(' | '),
+    fotoUrl:App.fotoEliminada?'':(($('fotoPreview').src&&$('fotoPreview').style.display!=='none'&&!App.fotoBase64)?$('fotoPreview').src:'')};
+  if(!est.nie||!est.apellidos||!est.nombres||!est.grado||!est.nombreEncargado||!est.telefonoEncargado||!est.nombreDocente){toast('Completá los campos obligatorios (*) — NIE, nombres, grado, encargado con teléfono y docente guía.','error');return;}
+  const dup=App.estudiantes.find(e=>e.nie===est.nie&&String(e.id)!==String(est.id));
+  if(dup){toast('El NIE '+est.nie+' ya está registrado a otro estudiante.','error');return;}
+  setGuardando();
+  try{
+    const r=await api('guardarEstudiante',{est,fotoBase64:App.fotoBase64||null});
+    if(r.fotoUrl)est.fotoUrl=r.fotoUrl;
+    const i=App.estudiantes.findIndex(e=>String(e.id)===String(est.id));
+    if(i>=0)App.estudiantes[i]=est;else App.estudiantes.push(est);
+    setGuardado();toast('✓ Matrícula guardada en el servidor','ok');
+    $('panelForm').style.display='none';pintarTablaEstudiantes();detenerCamara();
+  }catch(err){setGuardado();toast(err.message,'error');}
+}
+function eliminarEstudiante(id){
+  const e=App.estudiantes.find(x=>String(x.id)===String(id));
+  confirmar('¿Eliminar a '+nombreCompleto(e)+' (NIE '+e.nie+')? Se borrará también su asistencia y calificaciones.',async()=>{
+    setGuardando();
+    try{await api('eliminarEstudiante',{id:e.id});App.estudiantes=App.estudiantes.filter(x=>String(x.id)!==String(id));setGuardado();pintarTablaEstudiantes();toast('Estudiante eliminado','ok');}
+    catch(err){setGuardado();toast(err.message,'error');}
+  });
+}
+
+/* ---------- CÁMARA / FOTOGRAFÍA ---------- */
+let stream=null;
+async function activarCamara(){
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:640},audio:false});
+    $('videoCam').srcObject=stream; $('camPanel').style.display='block';
+    $('fotoPreview').style.display='none';$('fotoVacia').style.display='none';
+    $('btnCapturar').style.display='block';$('btnCam').textContent='🎥 Cámara activa…';
+  }catch(err){toast('No se pudo abrir la cámara: '+err.message+' (revisá permisos; se requiere HTTPS)','error');}
+}
+function detenerCamara(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}$('camPanel').style.display='none';$('btnCapturar').style.display='none';$('btnCam').textContent='🎥 Activar cámara';}
+function capturarFoto(){
+  const v=$('videoCam'),c=document.createElement('canvas');
+  c.width=360;c.height=Math.round(360*v.videoHeight/v.videoWidth);
+  c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+  App.fotoBase64=c.toDataURL('image/jpeg',.85);
+  $('fotoPreview').src=App.fotoBase64;$('fotoPreview').style.display='block';
+  detenerCamara();toast('Fotografía capturada','ok');
+}
+async function subirFotoArchivo(file){
+  if(!file)return;
+  if(!/image\/(png|jpeg)/.test(file.type)){toast('Solo se aceptan imágenes PNG o JPG','error');return;}
+  App.fotoBase64=await comprimir(file,360);
+  $('fotoPreview').src=App.fotoBase64;$('fotoPreview').style.display='block';$('fotoVacia').style.display='none';
+  detenerCamara();toast('Imagen cargada','ok');
+}
+function quitarFoto(silencioso){App.fotoBase64='';App.fotoEliminada=true;$('fotoPreview').style.display='none';$('fotoPreview').src='';if(!silencioso)$('fotoVacia').style.display='flex';detenerCamara();}
+
+/* ---------- ASISTENCIA ---------- */
+let estadosAsis={};
+function pintarAsistencia(){
+  const g=$('a_grado').value,s=$('a_seccion').value,f=$('a_fecha').value;
+  estadosAsis={};
+  App.asistencia.filter(a=>a.fecha===f).forEach(a=>estadosAsis[a.nie]=a.estado);
+  const lista=App.estudiantes.filter(e=>e.grado===g&&e.seccion===s&&e.estado==='Activo');
+  $('asisBody').innerHTML=lista.map((e,i)=>{
+    const sel=estadosAsis[e.nie]||'A';estadosAsis[e.nie]=sel;
+    return `<tr><td>${i+1}</td><td><b>${esc(nombreCompleto(e))}</b></td><td>${esc(e.nie)}</td>
+    <td><div class="estado-grupo" data-nie="${esc(e.nie)}">${['A','F','R','P'].map(x=>`<button class="${x===sel?'sel-'+x:''}" onclick="marcar('${esc(e.nie)}','${x}',this)">${x}</button>`).join('')}</div></td></tr>`;
+  }).join('')||'<tr><td colspan="4" style="text-align:center;color:#8a97b5">Seleccioná grado y sección con estudiantes activos.</td></tr>';
+  pintarResumenMes();
+}
+function marcar(nie,est,btn){estadosAsis[nie]=est;btn.parentElement.querySelectorAll('button').forEach(b=>b.className='');btn.className='sel-'+est;}
+async function guardarAsistencia(){
+  const g=$('a_grado').value,s=$('a_seccion').value,f=$('a_fecha').value;
+  const filas=Object.keys(estadosAsis).map(nie=>{
+    const e=App.estudiantes.find(x=>x.nie===nie);
+    return {fecha:f,nie,estudiante:nombreCompleto(e),grado:g,seccion:s,estado:estadosAsis[nie],observacion:''};
+  });
+  if(!filas.length){toast('No hay estudiantes para guardar','error');return;}
+  setGuardando();
+  try{const r=await api('guardarAsistencia',{filas});
+    App.asistencia=App.asistencia.filter(a=>!(a.fecha===f&&a.grado===g&&a.seccion===s));
+    App.asistencia.push(...filas);
+    setGuardado();toast('✓ '+r.guardados+' registros de asistencia guardados','ok');pintarResumenMes();}
+  catch(err){setGuardado();toast(err.message,'error');}
+}
+function pintarResumenMes(){
+  const g=$('a_grado').value,s=$('a_seccion').value,m=$('a_mes').value;
+  const lista=App.estudiantes.filter(e=>e.grado===g&&e.seccion===s);
+  $('resumenBody').innerHTML=lista.map(e=>{
+    const reg=App.asistencia.filter(a=>a.nie===e.nie&&String(a.fecha).startsWith(m));
+    const c=x=>reg.filter(r=>r.estado===x).length;
+    const tot=reg.length, pct=tot?Math.round(c('A')/tot*100):0;
+    return `<tr><td><b>${esc(nombreCompleto(e))}</b></td><td><span class="chip chip-verde">${c('A')}</span></td><td><span class="chip chip-rojo">${c('F')}</span></td><td><span class="chip chip-oro">${c('R')}</span></td><td><span class="chip chip-azul">${c('P')}</span></td><td><b>${pct}%</b></td></tr>`;
+  }).join('')||'<tr><td colspan="6" style="text-align:center;color:#8a97b5">Sin datos para el mes seleccionado.</td></tr>';
+}
+
+/* ---------- CALIFICACIONES ---------- */
+function pintarNotas(){
+  const g=$('n_grado').value,s=$('n_seccion').value,p=$('n_periodo').value,m=$('n_materia').value.trim().toLowerCase();
+  const anio=App.cfg.anioLectivo||String(new Date().getFullYear());
+  const lista=App.estudiantes.filter(e=>e.grado===g&&e.seccion===s&&e.estado==='Activo');
+  $('notasBody').innerHTML=lista.map((e,i)=>{
+    const reg=App.calificaciones.find(c=>c.nie===e.nie&&String(c.periodo)===String(p)&&String(c.materia).toLowerCase()===m&&String(c.anioLectivo)===String(anio));
+    return `<tr><td>${i+1}</td><td><b>${esc(nombreCompleto(e))}</b></td><td>${esc(e.nie)}</td>
+    <td><input type="number" min="0" max="${App.cfg.escalaMax||10}" step="0.1" data-nie="${esc(e.nie)}" value="${reg?reg.nota:''}" placeholder="—" style="text-align:center;font-weight:700"></td></tr>`;
+  }).join('')||'<tr><td colspan="4" style="text-align:center;color:#8a97b5">Escribí una asignatura y seleccioná grado y sección.</td></tr>';
+  const materias=[...new Set(App.calificaciones.filter(c=>c.grado===g).map(c=>c.materia))];
+  $('dlMaterias').innerHTML=materias.map(x=>`<option value="${esc(x)}">`).join('');
+}
+async function guardarNotas(){
+  const g=$('n_grado').value,s=$('n_seccion').value,p=$('n_periodo').value,m=$('n_materia').value.trim();
+  const anio=App.cfg.anioLectivo||String(new Date().getFullYear());
+  if(!m){toast('Escribí la asignatura','error');return;}
+  const filas=[];
+  document.querySelectorAll('#notasBody input[data-nie]').forEach(inp=>{
+    if(inp.value!==''){
+      const e=App.estudiantes.find(x=>x.nie===inp.dataset.nie);
+      filas.push({nie:inp.dataset.nie,estudiante:nombreCompleto(e),grado:g,seccion:s,materia:m,periodo:p,nota:inp.value,anioLectivo:anio});
+    }
+  });
+  if(!filas.length){toast('No hay notas que guardar','error');return;}
+  setGuardando();
+  try{const r=await api('guardarCalificaciones',{filas});
+    App.calificaciones=App.calificaciones.filter(c=>!(c.grado===g&&c.seccion===s&&String(c.periodo)===String(p)&&String(c.materia).toLowerCase()===m.toLowerCase()&&String(c.anioLectivo)===String(anio)));
+    App.calificaciones.push(...filas);
+    setGuardado();toast('✓ '+r.guardadas+' notas guardadas','ok');}
+  catch(err){setGuardado();toast(err.message,'error');}
+}
+function llenarSelectsEstudiantes(){
+  const opts=App.estudiantes.map(e=>`<option value="${esc(e.nie)}">${esc(nombreCompleto(e))} — ${esc(e.grado)} "${esc(e.seccion)}"</option>`).join('');
+  ['b_estudiante','c_estudiante','ce_estudiante','cn_estudiante'].forEach(id=>$(id).innerHTML=opts);
+}
+
+/* ---------- DOCUMENTOS / MEMBRETES ---------- */
+function membrete(titulo){
+  const c=App.cfg;
+  const escudo=c.escudoUrl?`<img src="${c.escudoUrl}">`:'';
+  const logo=c.logoUrl?`<img src="${c.logoUrl}">`:'';
+  return `<div class="membrete">${escudo||'<div style="width:74px"></div>'}
+    <div class="centro"><div class="ministerio">Ministerio de Educación · República de El Salvador</div>
+    <div class="institucion">${esc(c.institucion||'')}</div>
+    <div class="detalle">${esc(c.direccion||'')} ${c.municipio?', Municipio de '+esc(c.municipio):''} ${c.departamento?', Depto. de '+esc(c.departamento):''} · Tel. ${esc(c.telefono||'')}<br>Año lectivo ${esc(c.anioLectivo||'')} ${c.lema?'· '+esc(c.lema):''}</div></div>
+    ${logo||'<div style="width:74px"></div>'}</div>
+  <div class="doc-titulo">${titulo}</div>`;
+}
+function pieDoc(){return `<div class="pie-doc"><span>Sistema de Registro Académico — MINED El Salvador</span><span>Emitido: ${new Date().toLocaleString('es-SV')}</span></div>`;}
+function marcaAgua(){return App.cfg.escudoUrl?`<div class="marca-agua"><img src="${App.cfg.escudoUrl}"></div>`:'';}
+function firmas(a,b){return `<div class="firma-zona"><div class="firma">${esc(a)}<small>Director(a) — ${esc(App.cfg.director||'')}</small></div><div class="firma">${esc(b)}<small>Sello de la institución</small></div></div>`;}
+function abrirDoc(html,titulo){$('docTitulo').textContent=titulo;$('docPaper').innerHTML=`<div class="doc">${html}</div>`;$('docModal').classList.add('abierto');}
+function cerrarDoc(){$('docModal').classList.remove('abierto');}
+function imprimirDoc(){$('printDoc').innerHTML=$('docPaper').innerHTML;window.print();}
+function fechaLetras(d){
+  const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  d=d||new Date();return `a los ${d.getDate()} días del mes de ${M[d.getMonth()]} de ${d.getFullYear()}`;
+}
+
+/* ---------- FICHA DEL ESTUDIANTE ---------- */
+function imprimirFicha(id){
+  const e=App.estudiantes.find(x=>String(x.id)===String(id));if(!e)return;
+  const docs=(e.documentos||'').split(' | ').filter(Boolean).map(d=>'✓ '+esc(d)).join('<br>')||'Ninguno registrado';
+  const h=membrete('Ficha de registro de ingreso de estudiantes')+marcaAgua()+`
+  <div style="display:flex;gap:16px;align-items:flex-start">
+    <div style="flex:1">
+      <table class="datos">
+        <tr><th>NIE</th><td><b>${esc(e.nie)}</b></td><th>Estado</th><td>${esc(e.estado||'')}</td></tr>
+        <tr><th>Apellidos</th><td colspan="3"><b>${esc(e.apellidos)}</b></td></tr>
+        <tr><th>Nombres</th><td colspan="3"><b>${esc(e.nombres)}</b></td></tr>
+        <tr><th>Sexo</th><td>${esc(e.sexo)}</td><th>Fecha de nacimiento</th><td>${esc(e.fechaNacimiento)}</td></tr>
+        <tr><th>Teléfono</th><td>${esc(e.telefono)}</td><th>Correo</th><td>${esc(e.correo)}</td></tr>
+        <tr><th>Dirección</th><td colspan="3">${esc(e.direccion)}, Municipio de ${esc(e.municipio)}, Depto. de ${esc(e.departamento)}</td></tr>
+        <tr><th>Grado y sección</th><td><b>${esc(e.grado)} "${esc(e.seccion)}"</b></td><th>¿Repite?</th><td>${esc(e.repite)}</td></tr>
+        <tr><th>Docente encargado</th><td>${esc(e.nombreDocente)}</td><th>Tel. docente</th><td>${esc(e.telefonoDocente)}</td></tr>
+        <tr><th>Procedencia</th><td colspan="3">${esc(e.institucionProcedencia)} — Último grado aprobado: ${esc(e.ultimoGradoAprobado)}</td></tr>
+        <tr><th>Responsable</th><td>${esc(e.nombreEncargado)} (${esc(e.parentesco)})</td><th>Tel. responsable</th><td><b>${esc(e.telefonoEncargado)}</b></td></tr>
+        <tr><th>Enfermedades</th><td colspan="3">${esc(e.enfermedades)||'Ninguna reportada'}</td></tr>
+        <tr><th>Observaciones</th><td colspan="3">${esc(e.observaciones)||'—'}</td></tr>
+        <tr><th>Fecha de matrícula</th><td colspan="3">${esc(e.fechaMatricula)}</td></tr>
+      </table>
+      <table class="datos"><tr><th style="width:100%">Documentos entregados (requisitos de matrícula)</th></tr>
+      <tr><td style="font-size:11.5px;line-height:1.7">${docs}</td></tr></table>
+    </div>
+    <div style="text-align:center">${e.fotoUrl?`<img class="foto-doc" src="${e.fotoUrl}">`:'<div class="foto-doc" style="display:flex;align-items:center;justify-content:center;color:#8a97b5;font-size:10px">SIN FOTO</div>'}<br><small style="font-size:10px;color:#63718f">Fotografía del estudiante</small></div>
+  </div>
+  ${firmas('Padre, madre o encargado','Secretaría / Dirección')}
+  ${pieDoc()}`;
+  abrirDoc(h,'Ficha de ingreso — '+nombreCompleto(e));
+  api('registrarConstancia',{tipo:'Ficha impresa',nie:e.nie,estudiante:nombreCompleto(e),detalle:'Ficha de registro de ingreso'}).catch(()=>{});
+}
+
+/* ---------- BOLETA DE CALIFICACIONES ---------- */
+function datosBoleta(nie,anio){
+  const regs=App.calificaciones.filter(c=>c.nie===nie&&String(c.anioLectivo)===String(anio));
+  const materias=[];regs.forEach(r=>{if(!materias.includes(r.materia))materias.push(r.materia);});
+  const np=+(App.cfg.numPeriodos||4);
+  const filas=materias.map(m=>{
+    const notas={};let sum=0,cnt=0;
+    for(let p=1;p<=np;p++){const r=regs.find(x=>x.materia===m&&String(x.periodo)===String(p));notas[p]=r?r.nota:'';if(r){sum+=parseFloat(r.nota);cnt++;}}
+    return {materia:m,notas,prom:cnt?(sum/cnt):''};
+  });
+  const promGen=filas.length?filas.reduce((a,f)=>a+(f.prom?parseFloat(f.prom):0),0)/filas.filter(f=>f.prom!=='').length:'';
+  return {filas,np,promGen};
+}
+function generarBoleta(){
+  const nie=$('b_estudiante').value,anio=$('b_anio').value;
+  const e=App.estudiantes.find(x=>x.nie===nie);if(!e){toast('Seleccioná un estudiante','error');return;}
+  const {filas,np,promGen}=datosBoleta(nie,anio);
+  const asis=App.asistencia.filter(a=>a.nie===nie&&String(a.fecha).startsWith(anio));
+  const ca=x=>asis.filter(a=>a.estado===x).length;
+  const h=membrete('Boleta de calificaciones')+marcaAgua()+`
+  <div class="doc-meta"><span>Estudiante: <b>${esc(nombreCompleto(e))}</b></span><span>NIE: <b>${esc(e.nie)}</b></span><span>Grado: <b>${esc(e.grado)} "${esc(e.seccion)}"</b></span></div>
+  <table class="notas"><thead><tr><th style="width:34px">N°</th><th style="text-align:left">Asignatura</th>${Array.from({length:np},(_,i)=>`<th>P${i+1}</th>`).join('')}<th>Promedio</th></tr></thead>
+  <tbody>${filas.map((f,i)=>`<tr><td>${i+1}</td><td class="mat">${esc(f.materia)}</td>${Array.from({length:np},(_,p)=>`<td>${f.notas[p+1]!==''?parseFloat(f.notas[p+1]).toFixed(1):'—'}</td>`).join('')}<td style="font-weight:700;background:#fdf3d7">${f.prom!==''?parseFloat(f.prom).toFixed(1):'—'}</td></tr>`).join('')||`<tr><td colspan="${np+3}" style="text-align:center;color:#8a97b5">Sin calificaciones registradas para este año lectivo.</td></tr>`}</tbody>
+  <tfoot><tr><td colspan="2" style="text-align:right;font-weight:800">PROMEDIO GENERAL</td><td colspan="${np+1}" style="font-weight:900;font-size:14px;background:#eef2fb">${promGen!==''?parseFloat(promGen).toFixed(2):'—'}</td></tr></tfoot></table>
+  <table class="datos"><tr><th>Asistencia anual</th><td>Asistencias: <b>${ca('A')}</b> · Faltas: <b>${ca('F')}</b> · Retrasos: <b>${ca('R')}</b> · Permisos: <b>${ca('P')}</b></td></tr>
+  <tr><th>Escala de calificación</th><td>De 1 a ${esc(App.cfg.escalaMax||'10')}. Nota mínima de aprobación: ${esc(App.cfg.notaAprobacion||'6.0')}.</td></tr>
+  <tr><th>Docente encargado</th><td>${esc(e.nombreDocente)} — Tel. ${esc(e.telefonoDocente)}</td></tr></table>
+  ${firmas('Director(a)','Docente encargado del grado')}
+  ${pieDoc()}`;
+  abrirDoc(h,'Boleta de calificaciones — '+nombreCompleto(e));
+  api('registrarConstancia',{tipo:'Boleta de calificaciones',nie,estudiante:nombreCompleto(e),detalle:'Año lectivo '+anio}).catch(()=>{});
+}
+
+/* ---------- CONDUCTA (REDACCIÓN IA) ---------- */
+function generarConductaIA(){
+  const e=App.estudiantes.find(x=>x.nie===$('c_estudiante').value);if(!e){toast('Seleccioná un estudiante','error');return;}
+  const nivel=$('c_nivel').value,obs=$('c_obs').value.trim(),c=App.cfg;
+  const aperturas=['La suscrita Dirección','Quien suscribe, en calidad de Dirección','La Dirección de este Centro Educativo'];
+  const niveles={'Sobresaliente':'ha observado una conducta SOBRESALIENTE, destacándose por su disciplina, respeto hacia la comunidad educativa y cumplimiento ejemplar del Reglamento Interno','Muy buena':'ha observado una conducta MUY BUENA, mostrando respeto, responsabilidad y sana convivencia con sus compañeros y docentes','Buena':'ha observado una conducta BUENA, en armonía con los valores institucionales y el Reglamento Interno de este Centro Educativo','Regular, con observaciones':'ha observado una conducta REGULAR, habiéndose aplicado las medidas formativas correspondientes conforme al Reglamento Interno'};
+  const cierres=['En fe de lo anterior y para los usos que a la persona interesada convenga','Para dar fe de lo expuesto y a solicitud de la persona interesada','Y no habiendo más que hacer constar'];
+  const azar=a=>a[Math.floor(Math.random()*a.length)];
+  const txt=`${azar(aperturas)} del ${c.institucion||'Centro Educativo'}, ${c.municipio?'Municipio de '+c.municipio:''}${c.departamento?', Departamento de '+c.departamento:''}, República de El Salvador,\n\nHACE CONSTAR:\n\nQue el/la estudiante ${nombreCompleto(e).toUpperCase()}, con Número de Identificación Estudiantil (NIE) ${e.nie}, ${e.sexo==='Femenino'?'inscrita':'inscrito'} en ${e.grado}, sección "${e.seccion}", de este Centro Educativo durante el año lectivo ${c.anioLectivo}, ${niveles[nivel]}.${obs?'\n\nSe hace constar además que: '+obs+'.':''}\n\n${azar(cierres)}, se extiende la presente CONSTANCIA DE CONDUCTA en ${c.municipio||'esta ciudad'}, ${fechaLetras()}.`;
+  $('c_texto').value=txt;toast('✨ Redacción generada con IA. Podés editarla libremente.','ok');
+}
+function emitirConducta(){
+  const e=App.estudiantes.find(x=>x.nie===$('c_estudiante').value);const txt=$('c_texto').value.trim();
+  if(!e||!txt){toast('Generá primero la redacción','error');return;}
+  const h=membrete('Constancia de conducta')+marcaAgua()+`
+  <div class="parrafo" style="white-space:pre-wrap">${esc(txt)}</div>
+  <div class="firma-zona" style="justify-content:center"><div class="firma">${esc(App.cfg.director||'Director(a)')}<small>Director(a) — Sello de la institución</small></div></div>
+  ${pieDoc()}`;
+  abrirDoc(h,'Constancia de conducta — '+nombreCompleto(e));
+  api('registrarConstancia',{tipo:'Constancia de conducta',nie:e.nie,estudiante:nombreCompleto(e),detalle:'Generada con IA'}).catch(()=>{});
+}
+
+/* ---------- CONSTANCIAS ---------- */
+function emitirConstEstudio(){
+  const e=App.estudiantes.find(x=>x.nie===$('ce_estudiante').value);if(!e){toast('Seleccioná un estudiante','error');return;}
+  const c=App.cfg,desde=$('ce_desde').value,hasta=$('ce_hasta').value||c.anioLectivo,actual=$('ce_actual').value==='Sí';
+  const rango=desde&&hasta&&desde!==hasta?`durante los años lectivos ${desde} al ${hasta}`:`durante el año lectivo ${hasta}`;
+  const verbo=actual?`<b>ESTUDIA ACTUALMENTE</b> en este Centro Educativo, cursando <b>${esc(e.grado)}, sección "${esc(e.seccion)}"</b>`:`<b>ESTUDIÓ</b> en este Centro Educativo`;
+  const h=membrete('Constancia de estudio')+marcaAgua()+`
+  <div class="parrafo">La suscrita Dirección del ${esc(c.institucion||'Centro Educativo')}${c.municipio?', Municipio de '+esc(c.municipio):''}${c.departamento?', Departamento de '+esc(c.departamento):''}, República de El Salvador,</div>
+  <div class="parrafo" style="text-align:center;font-weight:700;letter-spacing:.2em">HACE CONSTAR:</div>
+  <div class="parrafo">Que el/la estudiante <b>${esc(nombreCompleto(e).toUpperCase())}</b>, con Número de Identificación Estudiantil (NIE) <b>${esc(e.nie)}</b>, ${verbo}, ${rango}, ${esc($('ce_motivo').value)}.</div>
+  <div class="parrafo">Y para los usos legales que correspondan, se extiende la presente constancia en ${esc(c.municipio||'esta ciudad')}, ${fechaLetras()}.</div>
+  <div class="firma-zona" style="justify-content:center"><div class="firma">${esc(c.director||'Director(a)')}<small>Director(a) — Sello de la institución</small></div></div>${pieDoc()}`;
+  abrirDoc(h,'Constancia de estudio — '+nombreCompleto(e));
+  api('registrarConstancia',{tipo:'Constancia de estudio',nie:e.nie,estudiante:nombreCompleto(e),detalle:desde+'–'+hasta}).catch(()=>{});
+}
+function emitirConstNotas(){
+  const nie=$('cn_estudiante').value,anio=$('cn_anio').value;
+  const e=App.estudiantes.find(x=>x.nie===nie);if(!e){toast('Seleccioná un estudiante','error');return;}
+  const {filas,np,promGen}=datosBoleta(nie,anio);
+  const h=membrete('Constancia de notas')+marcaAgua()+`
+  <div class="doc-meta"><span>Estudiante: <b>${esc(nombreCompleto(e))}</b></span><span>NIE: <b>${esc(e.nie)}</b></span><span>Grado: <b>${esc(e.grado)} "${esc(e.seccion)}"</b></span></div>
+  <div class="parrafo">La suscrita Dirección hace constar que el/la estudiante mencionado(a) obtuvo durante el año lectivo <b>${esc(anio)}</b> las calificaciones siguientes (escala de 1 a ${esc(App.cfg.escalaMax||'10')}):</div>
+  <table class="notas"><thead><tr><th style="text-align:left">Asignatura</th>${Array.from({length:np},(_,i)=>`<th>P${i+1}</th>`).join('')}<th>Promedio</th></tr></thead>
+  <tbody>${filas.map(f=>`<tr><td class="mat">${esc(f.materia)}</td>${Array.from({length:np},(_,p)=>`<td>${f.notas[p+1]!==''?parseFloat(f.notas[p+1]).toFixed(1):'—'}</td>`).join('')}<td style="font-weight:700">${f.prom!==''?parseFloat(f.prom).toFixed(1):'—'}</td></tr>`).join('')}</tbody>
+  <tfoot><tr><td style="text-align:right;font-weight:800">PROMEDIO GENERAL</td><td colspan="${np+1}" style="font-weight:900;background:#eef2fb">${promGen!==''?parseFloat(promGen).toFixed(2):'—'}</td></tr></tfoot></table>
+  <div class="parrafo">Se extiende la presente en ${esc(App.cfg.municipio||'esta ciudad')}, ${fechaLetras()}.</div>
+  <div class="firma-zona" style="justify-content:center"><div class="firma">${esc(App.cfg.director||'Director(a)')}<small>Director(a) — Sello de la institución</small></div></div>${pieDoc()}`;
+  abrirDoc(h,'Constancia de notas — '+nombreCompleto(e));
+  api('registrarConstancia',{tipo:'Constancia de notas',nie,estudiante:nombreCompleto(e),detalle:'Año '+anio}).catch(()=>{});
+}
+function pintarHistorial(){
+  $('historialBody').innerHTML=[...App.constancias].reverse().map(c=>`<tr><td>${esc(c.fecha)}</td><td><span class="chip chip-azul">${esc(c.tipo)}</span></td><td><b>${esc(c.estudiante)}</b></td><td>${esc(c.detalle)}</td><td>${esc(c.emitidoPor)}</td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#8a97b5">Sin constancias emitidas todavía.</td></tr>';
+}
+
+/* ---------- ARRANQUE ---------- */
+function pintarTodo(){renderPanel();pintarTablaEstudiantes();llenarOpciones();aplicarConfig();}
+(async function iniciar(){
+  /* v3.1: se eliminan URLs antiguas guardadas en el navegador (causa del error repetido) */
+  try{ localStorage.removeItem('GAS_URL'); }catch(e){}
+  llenarOpciones();
+  const ses=sessionStorage.getItem('SESION');
+  if(ses){ try{ const s=JSON.parse(ses); App.user=s.usuario||null; App.token=s.token||''; }catch(e){} }
+  await sincronizar();
+  if(!App.user) mostrarLogin();
+  pintarTodo();
+})();
+</script>
+</body>
+</html>
