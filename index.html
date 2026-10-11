@@ -1,5 +1,5 @@
-E<!--
-█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+<!--
+█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
 █                                                                    █
 █   ⚠️⚠️⚠️  ROTULO DE CONFIGURACION DE LA CONEXION  ⚠️⚠️⚠️             █
 █                                                                    █
@@ -12,6 +12,9 @@ E<!--
 █                                                                    █
 █   NOTA v3.1: la URL ya NO se guarda en el navegador. Siempre       █
 █   manda la que escribas aqui. (Esto corrigio el error repetido.)   █
+█                                                                    █
+█   ✅ v3.1-R: interfaz 100% responsiva (celular, tablet, laptop,    █
+█      escritorio) y botones aptos para dedo y tecla Enter.          █
 █                                                                    █
 █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 -->
@@ -36,11 +39,16 @@ body{font-family:'Source Sans 3',sans-serif;color:var(--tinta);background:var(--
   radial-gradient(1000px 420px at 85% -10%,rgba(217,164,24,.14),transparent 60%);}
 h1,h2,h3,h4,.display{font-family:'Archivo',sans-serif}
 button{font-family:'Archivo',sans-serif;cursor:pointer}
+button,input,select,textarea{-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 input,select,textarea{font-family:'Source Sans 3',sans-serif;font-size:.95rem;color:var(--tinta);
   border:1px solid var(--linea);border-radius:6px;padding:.55rem .7rem;background:#fff;width:100%;outline:none;transition:border .15s, box-shadow .15s}
 input:focus,select:focus,textarea:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(14,63,169,.15)}
 label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#4a5b7d;display:block;margin-bottom:.3rem}
 .campo{margin-bottom:.85rem}
+.tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ficha-grid{display:grid;grid-template-columns:1fr 300px;gap:1.6rem}
+.top-spacer{flex:1}
 
 #splash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(160deg,var(--azul-tinta) 0%,var(--azul-osc) 55%,var(--azul) 100%);color:#fff;transition:opacity .5s}
@@ -213,17 +221,67 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
   display:flex;justify-content:space-between;letter-spacing:.03em}
 .foto-doc{width:108px;height:138px;object-fit:cover;border:2px solid var(--azul);border-radius:4px;background:#e8edf7}
 #printDoc{display:none}
+
+/* ============ RESPONSIVO: TABLET / LAPTOP PEQUEÑA ============ */
+@media screen and (max-width:980px){
+  #app{grid-template-columns:70px 1fr}
+  .marca b,.marca small,.navitem span,.lado-pie{display:none}
+  .navitem{justify-content:center;padding:.7rem .5rem}
+  .grid3,.grid4{grid-template-columns:repeat(2,1fr)}
+  .login-lateral{display:none}
+  .ficha-grid{grid-template-columns:1fr}
+  .contenido{padding:1.1rem 1rem 2.4rem}
+}
+/* ============ RESPONSIVO: TABLET PEQUEÑA ============ */
+@media screen and (max-width:768px){
+  html{font-size:14.5px}
+  .topbar{flex-wrap:wrap;gap:.5rem .7rem;padding:.6rem .9rem}
+  .top-spacer{display:none}
+  #saveState{min-width:0;flex:1;text-align:right}
+  .grid2{grid-template-columns:1fr}
+  .modal-fondo{padding:.6rem}
+  .modal{max-height:94vh}
+  .doc{width:100%;padding:24px 18px}
+  .doc table.datos th{width:110px}
+  .doc table.notas th,.doc table.notas td{padding:4px 4px;font-size:11px}
+  .stat-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+}
+/* ============ RESPONSIVO: CELULAR ============ */
+@media screen and (max-width:560px){
+  html{font-size:14px}
+  #app{grid-template-columns:56px 1fr}
+  .marca svg{width:32px;height:32px}
+  .grid3,.grid4{grid-template-columns:1fr}
+  .contenido{padding:.9rem .7rem 2rem}
+  .tarjeta{padding:1rem .9rem}
+  .tarjeta-login{padding:1.5rem 1.2rem 1.3rem}
+  .login-derecha{padding:1.2rem .9rem}
+  .filtros{gap:.5rem}
+  .filtros .campo{min-width:100%}
+  .doc-meta{flex-direction:column;gap:2px}
+  .doc .firma-zona{flex-direction:column;align-items:center;gap:44px;margin-top:48px}
+  .doc .firma{width:200px}
+  input,select,textarea{font-size:16px}
+  #splash h1{font-size:1.25rem}
+  #toasts{left:.8rem;right:.8rem}
+  .toast{max-width:100%}
+  .userchip div:last-child{display:none}
+}
+/* ============ PANTALLAS TÁCTILES: OBJETOS GRANDES PARA EL DEDO ============ */
+@media screen and (pointer:coarse){
+  .btn{padding:.8rem 1.3rem;min-height:44px}
+  .navitem{min-height:44px}
+  .acciones button{width:40px;height:40px;font-size:1rem}
+  .estado-grupo button{width:40px;height:38px}
+  .tabla td,.tabla th{padding:.6rem .5rem}
+  .docs-check label{padding:.45rem 0}
+}
+/* ============ IMPRESIÓN (sin cambios) ============ */
 @media print{
   body>*:not(#printDoc){display:none !important}
   #printDoc{display:block !important}
   @page{size:letter;margin:10mm}
   .doc{width:auto;padding:0}
-}
-@media(max-width:980px){
-  #app{grid-template-columns:70px 1fr}
-  .marca b,.marca small,.navitem span,.lado-pie{display:none}
-  .grid3,.grid4{grid-template-columns:repeat(2,1fr)}
-  .login-lateral{display:none}
 }
 </style>
 </head>
@@ -254,8 +312,8 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
         <div class="sub" id="loginInstitucion">Ingresá tus credenciales para continuar</div>
         <div id="loginError"></div>
         <form id="loginForm">
-          <div class="campo"><label>Usuario</label><input id="inpUser" autocomplete="username" placeholder="admin" required></div>
-          <div class="campo"><label>Contraseña</label><input id="inpPass" type="password" autocomplete="current-password" placeholder="••••••" required></div>
+          <div class="campo"><label>Usuario</label><input id="inpUser" autocomplete="username" placeholder="admin" enterkeyhint="next" required></div>
+          <div class="campo"><label>Contraseña</label><input id="inpPass" type="password" autocomplete="current-password" placeholder="••••••" enterkeyhint="go" required></div>
           <button class="btn btn-azul btn-full" type="submit">Iniciar sesión →</button>
         </form>
         <div class="mini-nota">🔒 Datos sincronizados automáticamente con la hoja de cálculo de Google</div>
@@ -288,7 +346,7 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
     <span class="pill"><span class="punto" id="connDot"></span><span id="connTexto">Conectado</span></span>
     <button class="btn btn-linea" id="btnSync" style="padding:.45rem .9rem">⟳ Sincronizar</button>
     <span id="saveState"></span>
-    <div style="flex:1"></div>
+    <div class="top-spacer"></div>
     <div class="userchip"><div class="avatar" id="userAvatar">A</div><div><b id="userName" style="font-size:.86rem;display:block">Admin</b><small id="userRol" style="color:#63718f">Administrador</small></div></div>
     <button class="btn btn-fantasma" id="btnLogout" style="padding:.4rem .8rem">Salir</button>
   </header>
@@ -314,8 +372,10 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
       </div>
       <div class="tarjeta">
         <h3>Últimas matrículas registradas</h3>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>Foto</th><th>NIE</th><th>Estudiante</th><th>Grado</th><th>Sección</th><th>Encargado</th></tr></thead>
         <tbody id="recientesBody"></tbody></table>
+        </div>
       </div>
     </section>
 
@@ -328,14 +388,16 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
           <button class="btn btn-azul" onclick="nuevoEstudiante()">＋ Nueva matrícula</button>
           <button class="btn btn-fantasma" onclick="document.getElementById('panelForm').style.display='none'">Ocultar formulario</button>
         </div>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>Foto</th><th>NIE</th><th>Apellidos, Nombres</th><th>Grado</th><th>Sec.</th><th>Encargado</th><th>Tel. encargado</th><th>Acciones</th></tr></thead>
         <tbody id="tablaEstBody"></tbody></table>
+        </div>
       </div>
 
       <div class="tarjeta" id="panelForm" style="display:none">
         <h3 id="formTitulo"><span class="num">FICHA</span> Ficha de inscripción y matrícula</h3>
         <input type="hidden" id="e_id">
-        <div style="display:grid;grid-template-columns:1fr 300px;gap:1.6rem">
+        <div class="ficha-grid">
           <div>
             <h3 style="font-size:.85rem;color:var(--azul)"><span class="num">01</span> Datos del estudiante</h3>
             <div class="grid3">
@@ -427,7 +489,9 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
           <button class="btn btn-azul" onclick="guardarAsistencia()">💾 Guardar asistencia</button>
         </div>
         <p style="font-size:.8rem;color:#63718f;margin-bottom:.7rem"><b>A</b>=Asistencia · <b>F</b>=Falta · <b>R</b>=Retraso · <b>P</b>=Permiso/Justificado. Hacé clic para marcar cada estudiante.</p>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>#</th><th>Estudiante</th><th>NIE</th><th>Marca</th></tr></thead><tbody id="asisBody"></tbody></table>
+        </div>
       </div>
       <div class="tarjeta">
         <h3><span class="num">MES</span> Resumen mensual</h3>
@@ -435,7 +499,9 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
           <div class="campo" style="max-width:190px"><label>Mes</label><input id="a_mes" type="month" onchange="pintarResumenMes()"></div>
           <span style="font-size:.8rem;color:#63718f;padding-bottom:.6rem">Usa el grado y sección seleccionados arriba.</span>
         </div>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>Estudiante</th><th>Asistencias</th><th>Faltas</th><th>Retrasos</th><th>Permisos</th><th>% Asistencia</th></tr></thead><tbody id="resumenBody"></tbody></table>
+        </div>
       </div>
     </section>
 
@@ -450,7 +516,9 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
           <div class="campo"><label>Asignatura (escribila)</label><input id="n_materia" list="dlMaterias" placeholder="Ej.: Matemática" onchange="pintarNotas()"></div>
           <button class="btn btn-azul" onclick="guardarNotas()">💾 Guardar notas</button>
         </div>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>#</th><th>Estudiante</th><th>NIE</th><th style="max-width:130px">Nota</th></tr></thead><tbody id="notasBody"></tbody></table>
+        </div>
       </div>
       <div class="tarjeta">
         <h3><span class="num">BOLETA</span> Generar boleta oficial de calificaciones</h3>
@@ -504,7 +572,9 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
       </div>
       <div class="tarjeta">
         <h3><span class="num">HISTORIAL</span> Constancias emitidas</h3>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>Fecha</th><th>Tipo</th><th>Estudiante</th><th>Detalle</th><th>Emitida por</th></tr></thead><tbody id="historialBody"></tbody></table>
+        </div>
       </div>
     </section>
 
@@ -512,9 +582,10 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
     <section class="vista" id="vista-config">
       <div class="tarjeta">
         <h3><span class="num">01</span> Datos de la institución</h3>
-        <div class="grid2">
+        <div class="grid3">
           <div class="campo"><label>Nombre de la institución</label><input id="cfg_institucion"></div>
           <div class="campo"><label>Año lectivo</label><input id="cfg_anio"></div>
+          <div class="campo"><label>Código de infraestructura</label><input id="cfg_codinfra" placeholder="Ej.: 14045"></div>
         </div>
         <div class="grid3">
           <div class="campo"><label>Dirección</label><input id="cfg_direccion"></div>
@@ -542,7 +613,9 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
       </div>
       <div class="tarjeta">
         <h3><span class="num">02</span> Usuarios y colaboradores</h3>
+        <div class="tabla-scroll">
         <table class="tabla"><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th></th></tr></thead><tbody id="usuariosBody"></tbody></table>
+        </div>
         <h3 style="margin-top:1.3rem"><span class="num">＋</span> Crear colaborador</h3>
         <div class="grid4">
           <div class="campo"><label>Usuario</label><input id="u_usuario"></div>
@@ -612,11 +685,11 @@ label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:upper
 /*                                                                                         */
 /*▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄*/
 
-/*⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇  LA LINEA QUE DEBES EDITAR ES LA SIGUIENTE  ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇*/
+/*⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇  LA LINEA QUE DEBES EDITAR ES LA SIGUIENTE  ⬇⬇⬇⬇⬇⬇⬇⬇*/
 
-const URL_IMPLEMENTACION = "https://script.google.com/macros/s/AKfycbzqyU6IJzQ30gEyFbccbVkmnxKbMseMWfdaakjEFh7Q96dWPHaFPCX6m3pvw20GNVKL/exec";   /* ⬅⬅ SUSTITUYE AQUI LA URL ⬅⬅⬅ */
+const URL_IMPLEMENTACION = "https://script.google.com/macros/s/AKfycbx9WjWF_xLjbhBh_tCLV3kLH4UNbi2i0exeaj74Em38pq476Sqi9_uxgy3EvyV9VpTh/exec";   /* ⬅⬅ SUSTITUYE AQUI LA URL ⬅⬅ */
 
-/*⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆  FIN DEL ROTULO — CONTINUA EL SISTEMA  ⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆*/
+/*⬆⬆⬆⬆⬆⬆⬆  FIN DEL ROTULO — CONTINUA EL SISTEMA  ⬆⬆⬆⬆⬆⬆⬆⬆*/
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -790,6 +863,7 @@ function aplicarConfig(){
 function pintarConfig(){
   const c=App.cfg||{};
   $('cfg_institucion').value=c.institucion||''; $('cfg_anio').value=c.anioLectivo||'';
+  $('cfg_codinfra').value=c.codigoInfraestructura||'';
   $('cfg_direccion').value=c.direccion||''; $('cfg_telefono').value=c.telefono||''; $('cfg_correo').value=c.correo||'';
   $('cfg_municipio').value=c.municipio||''; $('cfg_departamento').value=c.departamento||''; $('cfg_director').value=c.director||'';
   $('cfg_periodos').value=c.numPeriodos||'4'; $('cfg_max').value=c.escalaMax||'10'; $('cfg_min').value=c.notaAprobacion||'6.0'; $('cfg_lema').value=c.lema||'';
@@ -803,7 +877,9 @@ $('cfg_logo').onchange=async e=>{if(e.target.files[0]){const d=await comprimir(e
 $('cfg_escudo').onchange=async e=>{if(e.target.files[0]){const d=await comprimir(e.target.files[0],480);$('cfg_escudo').dataset.img=d;$('cfg_escudoPrev').src=d;$('cfg_escudoPrev').style.display='block';}};
 async function guardarConfig(){
   setGuardando();
-  const cambios={institucion:$('cfg_institucion').value,anioLectivo:$('cfg_anio').value,direccion:$('cfg_direccion').value,
+  const cambios={institucion:$('cfg_institucion').value,anioLectivo:$('cfg_anio').value,
+    codigoInfraestructura:$('cfg_codinfra').value,
+    direccion:$('cfg_direccion').value,
     telefono:$('cfg_telefono').value,correo:$('cfg_correo').value,municipio:$('cfg_municipio').value,
     departamento:$('cfg_departamento').value,director:$('cfg_director').value,numPeriodos:$('cfg_periodos').value,
     escalaMax:$('cfg_max').value,notaAprobacion:$('cfg_min').value,lema:$('cfg_lema').value};
